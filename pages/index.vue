@@ -68,245 +68,21 @@
       </div>
     </div>
 
-    <div id="recent-product-item-listing">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 text-center">
-            <div class="col-md-12 recent-item-listing-heading bt_heading_3">
-              <h1>
-                Featured
-                <span>Listing</span>
-              </h1>
-              <div class="blind line_1"></div>
-              <div class="flipInX-1 blind icon">
-                <span class="icon">
-                  <i class="fa fa-stop"></i>&nbsp;&nbsp;
-                  <i class="fa fa-stop"></i>
-                </span>
-              </div>
-              <div class="blind line_2"></div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12" v-for="(x, y) in featuredList" :key="y">
-                <div class="recent-listing-box-container-item">
-                  <div class="col-md-6 col-sm-12 nopadding">
-                    <div class="recent-listing-box-image">
-                      <h1>{{ x.category.category }}</h1>
-                      <img :src="x.thumbnail" alt="img1" class="thumb-img" />
-                    </div>
-                    <div class="hover-overlay">
-                      <div class="hover-overlay-inner">
-                        <ul class="listing-links">
-                          <li>
-                            <a href="#">
-                              <i class="fa fa-heart green-1"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i class="fa fa-map-marker blue-1"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i class="fa fa-share yallow-1"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 col-sm-12 nopadding">
-                    <div class="recent-listing-box-item">
-                      <div class="listing-boxes-text">
-                        <nuxt-link
-                          :to="{
-                            name: 'startup-details-id',
-                            params: { id: x.id }
-                          }"
-                        >
-                          <h3>{{ x.name }}</h3>
-                        </nuxt-link>
-                        <a>
-                          <i class="fa fa-calendar"></i>
-                          {{ x.date_of_launch }}
-                        </a>
-                        <p style="min-height: 88px">{{ x.description.slice(0, 100) }}.....</p>
-                      </div>
-                      <div class="recent-feature-item-rating">
-                        <h2>
-                          <i class="fa fa-map-marker"></i>
-                          {{ x.country }}
-                        </h2>
-                        <span>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star-o"></i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div v-for="(item, i) in activeCategories" :key="i">
+      <featured-list v-if="item.name === 'Featured Listings'" :featuredList="featuredList" />
+      <categories-list
+        v-if="item.name === 'Category'"
+        :categoryList="categoryList"
+        :header_img="header_img"
+        :getListing="getListing"
+      />
+      <recent-listing v-if="item.name === 'Recent Listings'" :startupList="startupList" />
+      <register-startup
+        v-if="item.name === 'Register Startup'"
+        :register_startup="register_startup"
+      />
     </div>
-    <div
-      id="search-categorie-item"
-      :style="{
-        background: `linear-gradient( to right bottom, rgba(0, 0, 0, 0.801), rgba(128, 128, 128, 0.601) ), url(${header_img}) top center no-repeat`
-      }"
-    >
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 text-center">
-            <div class="row">
-              <div class="col-md-12 categories-heading bt_heading_3">
-                <h1 style="color: white">
-                  Directory
-                  <span>Category</span>
-                </h1>
-                <div class="blind line_1"></div>
-                <div class="flipInX-1 blind icon">
-                  <span class="icon">
-                    <i class="fa fa-stop"></i>&nbsp;&nbsp;
-                    <i class="fa fa-stop"></i>
-                  </span>
-                </div>
-                <div class="blind line_2"></div>
-              </div>
-              <div class="col-md-3 col-sm-6 col-xs-12" v-for="(x, y) in categoryList" :key="y">
-                <div class="categorie_item" v-bind:id="x.id" @click="getListing(x.id)">
-                  <div class="cate_item_block hi-icon-effect-8">
-                    <h1>
-                      <a href="#">{{ x.category }}</a>
-                    </h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="recent-product-item-listing">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 text-center">
-            <div class="col-md-12 recent-item-listing-heading bt_heading_3">
-              <h1>
-                Recent
-                <span>Listing</span>
-              </h1>
-              <div class="blind line_1"></div>
-              <div class="flipInX-1 blind icon">
-                <span class="icon">
-                  <i class="fa fa-stop"></i>&nbsp;&nbsp;
-                  <i class="fa fa-stop"></i>
-                </span>
-              </div>
-              <div class="blind line_2"></div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 col-sm-6 col-xs-12" v-for="(x, y) in startupList" :key="y">
-                <div class="recent-listing-box-container-item">
-                  <div class="col-md-6 col-sm-12 nopadding">
-                    <div class="recent-listing-box-image">
-                      <h1>{{ x.category.category }}</h1>
-                      <img :src="x.thumbnail" alt="img1" class="thumb-img" />
-                    </div>
-                    <div class="hover-overlay">
-                      <div class="hover-overlay-inner">
-                        <ul class="listing-links">
-                          <li>
-                            <a href="#">
-                              <i class="fa fa-heart green-1"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i class="fa fa-map-marker blue-1"></i>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <i class="fa fa-share yallow-1"></i>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 col-sm-12 nopadding">
-                    <div class="recent-listing-box-item">
-                      <div class="listing-boxes-text">
-                        <nuxt-link
-                          :to="{
-                            name: 'startup-details-id',
-                            params: { id: x.id }
-                          }"
-                        >
-                          <h3>{{ x.name }}</h3>
-                        </nuxt-link>
-                        <a>
-                          <i class="fa fa-calendar"></i>
-                          {{ x.date_of_launch }}
-                        </a>
-                        <p style="min-height: 88px">{{ x.description.slice(0, 100) }}.....</p>
-                      </div>
-                      <div class="recent-feature-item-rating">
-                        <h2>
-                          <i class="fa fa-map-marker"></i>
-                          {{ x.country }}
-                        </h2>
-                        <span>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star-o"></i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container-fluid st-sb-back">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <span class="banner-text-1">"Whether you think you can,</span>
-            <span class="banner-text-2" style="display: block">or think you can't--you're right."</span>
-            <br />
-            <span class="banner-text-3">
-              Starting your own business is like riding a roller coaster. There
-              are highs and lows and every turn you take is another twist. The
-              lows are really low, but the highs can be really high. You have to
-              be strong, keep your stomach tight, and ride along with the roller
-              coaster that you started.
-            </span>
-            <br />
-            <button class="st-bt-11" @click="register_startup">
-              Register Your Startup
-              <i
-                class="fa fa-angle-right"
-                aria-hidden="true"
-                style="background-color: #ffbe2e; border-radius: 50%; padding: 6px 13px"
-              ></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+
     <!--================================ Login and Register Forms ===========================================-->
 
     <!-- login form -->
@@ -465,6 +241,11 @@
 import Logo from "~/components/Logo.vue";
 import axios from "axios";
 import Cookies from "js-cookie";
+import FeaturedList from "~/components/FeatuerdList";
+import CategoriesList from "~/components/CategoriesList";
+import RecentListing from "~/components/RecentListing";
+import RegisterStartup from "~/components/RegisterStartup";
+
 let Swal;
 
 if (process.browser) {
@@ -493,16 +274,21 @@ export default {
       featuredList: [],
       loading_bool: true,
       categoryList: [],
-      searchValue: ""
+      searchValue: "",
+      activeCategories: []
     };
   },
 
   components: {
-    Logo
+    Logo,
+    FeaturedList,
+    CategoriesList,
+    RecentListing,
+    RegisterStartup
   },
 
-  mounted() {
-    this.getCategories();
+  async mounted() {
+    // this.getCategories();
     this.getStartups();
     this.getUserCount();
     this.getHomeCMS();
@@ -510,6 +296,8 @@ export default {
     if (window.location.href.includes("access_token")) {
       this.googleLogIn();
     }
+    const { data } = await this.$store.dispatch("getActiveComponents");
+    this.activeCategories = JSON.parse(data.value);
     $("#home")
       .addClass("active")
       .siblings()
@@ -644,15 +432,15 @@ export default {
           categoryObj[item.id] = { category: item.category };
         });
 
-        setTimeout(function() {
-          var select = document.getElementById("location-search-list");
-          for (this.i in categoryObj) {
-            select.options[select.options.length] = new Option(
-              categoryObj[this.i].category,
-              this.i
-            );
-          }
-        }, 300);
+        // setTimeout(function() {
+        //   var select = document.getElementById("location-search-list");
+        //   for (this.i in categoryObj) {
+        //     select.options[select.options.length] = new Option(
+        //       categoryObj[this.i].category,
+        //       this.i
+        //     );
+        //   }
+        // }, 300);
       });
     },
 

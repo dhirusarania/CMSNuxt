@@ -37,6 +37,24 @@ export const mutations = {
 };
 
 export const actions = {
+  getActiveComponents({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: "GET",
+        url: state.api.getActiveComponents + 2,
+        contentType: "application/json"
+        // headers: {
+        //   Authorization: "Token " + localStorage.getItem("token")
+        // }
+      })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          console.log("Error In HTTP Request - ", err);
+        });
+    });
+  },
   registerUser({ commit, state }, payload) {
     return new Promise((resolve, reject) => {
       axios({

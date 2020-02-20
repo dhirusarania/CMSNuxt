@@ -7,6 +7,8 @@ if (process.env.NODE_ENV == "development") {
 export const state = () => ({
   logInUser: url + "/signin",
 
+  getActiveComponents: url + "/get_active_home_components/",
+
   registerUser: url + "/register",
 
   getCategories: url + "/category",
