@@ -101,10 +101,13 @@
         <div class="row">
           <div class="col-12 hide-lg-product">
             <div class="tab">
-              <button class="tablinks btn-activated" id="product" @click="openbtn('description')">Products</button>
-              <button class="tablinks" id="faq" @click="openbtn('reviews')">FAQ</button>
-              <button class="tablinks" id="com" @click="openbtn('community')">Community</button>
-              <button class="tablinks" id="pit" @click="openbtn('pitch')">Pitch</button>
+              <button
+                class="tablinks btn-activated"
+                id="product"
+                @click="openbtn('description')"
+              >Products</button>
+              <!-- <button class="tablinks" id="faq" @click="openbtn('reviews')">FAQ</button>
+              <button class="tablinks" id="com" @click="openbtn('community')">Community</button> -->
             </div>
 
             <div id="description" class="tabcontent">

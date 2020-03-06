@@ -864,6 +864,41 @@ export const actions = {
         });
     },
 
+    productTestimonials({ commit, state }, payload) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.productTestimonials + payload,
+                    contentType: "application/json"
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    },
+
+    addTestimonial({ commit, state }, payload) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "POST",
+                    data: payload,
+                    url: state.api.addTestimonial,
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: state.bearer
+                    }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    },
     getActiveStaticComponents({ commit, state }) {
         return new Promise((resolve, reject) => {
             axios({

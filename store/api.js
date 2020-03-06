@@ -7,7 +7,11 @@ if (process.env.NODE_ENV == "development") {
 export const state = () => ({
     logInUser: url + "/signin",
 
+    getComponentData: url + "/create_component/",
+
     getActiveComponents: url + "/get_active_home_components/",
+
+    registerUser: url + "/register",
 
     registerUser: url + "/register",
 
@@ -93,5 +97,11 @@ export const state = () => ({
 
     getFilteredStartups: url + "/startup_search?search=",
 
-    getActiveStaticComponents: url + "/get_static_components"
+    getActiveStaticComponents: url + "/get_static_components",
+
+    getFilteredStartups: url + "/startup_search?search=",
+
+    productTestimonials: url + "/product_testimonials/",
+
+    addTestimonial: url + "/testimonial_post"
 });
