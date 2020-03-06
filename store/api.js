@@ -1,95 +1,97 @@
 if (process.env.NODE_ENV == "development") {
-  var url = "http://127.0.0.1:8000";
+    var url = "http://127.0.0.1:8000";
 } else {
-  var url = "/backend";
+    var url = "/backend";
 }
 
 export const state = () => ({
-  logInUser: url + "/signin",
+    logInUser: url + "/signin",
 
-  getActiveComponents: url + "/get_active_home_components/",
+    getActiveComponents: url + "/get_active_home_components/",
 
-  registerUser: url + "/register",
+    registerUser: url + "/register",
 
-  getCategories: url + "/category",
+    getCategories: url + "/category",
 
-  getUser: url + "/user/",
+    getUser: url + "/user/",
 
-  getAdditionalDetails: url + "/user_details/",
+    getAdditionalDetails: url + "/user_details/",
 
-  userInfoPost: url + "/user_ext_post",
+    userInfoPost: url + "/user_ext_post",
 
-  getListing: url + "/startupwithproducts/",
+    getListing: url + "/startupwithproducts/",
 
-  submitStartup: url + "/startup_post",
+    submitStartup: url + "/startup_post",
 
-  getStartUp: url + "/startupbyid/",
+    getStartUp: url + "/startupbyid/",
 
-  changePassword: url + "/change_password",
+    changePassword: url + "/change_password",
 
-  postProduct: url + "/product_post",
+    postProduct: url + "/product_post",
 
-  getProducts: url + "/productbystartup/",
+    getProducts: url + "/productbystartup/",
 
-  productById: url + "/productbyid/",
+    productById: url + "/productbyid/",
 
-  deleteStartup: url + "/deletestartupbyid/",
+    deleteStartup: url + "/deletestartupbyid/",
 
-  logOutUser: url + "/user_logout/",
+    logOutUser: url + "/user_logout/",
 
-  updateProduct: url + "/editproduct/",
+    updateProduct: url + "/editproduct/",
 
-  deleteProduct: url + "/deleteproduct/",
+    deleteProduct: url + "/deleteproduct/",
 
-  getStartups: url + "/all_startups",
+    getStartups: url + "/all_startups",
 
-  getStartupByCategory: url + "/startupbycat/",
+    getStartupByCategory: url + "/startupbycat/",
 
-  getStartupDetails: url + "/suwd/",
+    getStartupDetails: url + "/suwd/",
 
-  getStProducts: url + "/startup-products/",
+    getStProducts: url + "/startup-products/",
 
-  getCategoryById: url + "/catbyid/",
+    getCategoryById: url + "/catbyid/",
 
-  postUpdate: url + "/update_post",
+    postUpdate: url + "/update_post",
 
-  getUpdates: url + "/updatebyproduct/",
+    getUpdates: url + "/updatebyproduct/",
 
-  UpdateById: url + "/updatebyid/",
+    UpdateById: url + "/updatebyid/",
 
-  deleteUpdate: url + "/deleteproductupdate/",
+    deleteUpdate: url + "/deleteproductupdate/",
 
-  editProductUpdate: url + "/editProductUpdate/",
+    editProductUpdate: url + "/editProductUpdate/",
 
-  getHomeCMS: url + "/activated_home_cms",
+    getHomeCMS: url + "/activated_home_cms",
 
-  getCategoryCMS: url + "/activated_category_cms",
+    getCategoryCMS: url + "/activated_category_cms",
 
-  getActiveContactCMS: url + "/activated_contact_cms",
+    getActiveContactCMS: url + "/activated_contact_cms",
 
-  activatedAboutCMS: url + "/activated_about_cms",
+    activatedAboutCMS: url + "/activated_about_cms",
 
-  activatedFooterCMS: url + "/activated_footer_cms",
+    activatedFooterCMS: url + "/activated_footer_cms",
 
-  googleLogIn: url + "/oauth/login/",
+    googleLogIn: url + "/oauth/login/",
 
-  getBearerToken: url + "/auth/convert-token",
+    getBearerToken: url + "/auth/convert-token",
 
-  getContactForm: url + "/get_contact_form/",
+    getContactForm: url + "/get_contact_form/",
 
-  getUserCount: url + "/user_count",
+    getUserCount: url + "/user_count",
 
-  getFeaturedStartups: url + "/featured_startups",
+    getFeaturedStartups: url + "/featured_startups",
 
-  postRating: url + "/post_ratings",
+    postRating: url + "/post_ratings",
 
-  getUserRatings: url + "/update_ratings/",
+    getUserRatings: url + "/update_ratings/",
 
-  updateRatings: url + "/update_ratings/",
+    updateRatings: url + "/update_ratings/",
 
-  user_ratings_update: url + "/user_update_ratings/",
+    user_ratings_update: url + "/user_update_ratings/",
 
-  allProductRatings: url + "/all_ratings",
+    allProductRatings: url + "/all_ratings",
 
-  getFilteredStartups: url + "/startup_search?search="
+    getFilteredStartups: url + "/startup_search?search=",
+
+    getActiveStaticComponents: url + "/get_static_components"
 });

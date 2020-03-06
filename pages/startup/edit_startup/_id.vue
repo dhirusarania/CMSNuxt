@@ -221,6 +221,23 @@
                   </form>
                 </div>
 
+
+
+                <div
+                  class="submit_listing_box"
+                  style="margin-top: 0px; padding-top: 0px"
+                >
+                  <h3>Pitch / Campaign</h3>
+                  <form class="form-alt">
+                    <div class="row">
+                      <div class="form-group col-xs-12">
+                        <div id="editor-container"></div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+
                 <div class="from-list-lt">
                   <div class="form-group">
                     <button class="btn" type="submit" @click="editStartup">
@@ -240,6 +257,7 @@
 <script>
   import Cookies from "js-cookie";
   import axios from "axios";
+  let EditorJS, Header, List, Image, quill;
   export default {
     middleware: "token-auth",
     data() {
@@ -261,6 +279,29 @@
     },
 
     mounted() {
+
+
+      quill = new Quill("#editor-container", {
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, 3, 4, false] }],
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["image"],
+
+            [{ color: [] }, { background: [] }],
+            [{ font: [] }],
+            [{ align: [] }]
+          ]
+        },
+        placeholder: "Write Product Description here...",
+        theme: "snow"
+      });
+
+      quill.on("text-change", function() {
+        this.delta = quill.getContents();
+      });
+
       this.getCategories();
       $("#user_profile")
         .addClass("active")
@@ -447,6 +488,8 @@
           $("#category-select").val(res.data.category);
           localStorage.setItem("startupId", res.data.id);
           this.getCountries();
+          console.log(res.data)
+          quill.setContents(JSON.parse(res.data.pitch));
         });
       },
 
@@ -482,6 +525,9 @@
         if (this.year !== null) {
           payload.append("year_founded", this.year);
         }
+
+        payload.append("pitch", JSON.stringify(quill.getContents()));
+
         const country = $("#country-select :selected").text();
         payload.append("country", country);
         const state = $("#state-select :selected").text();

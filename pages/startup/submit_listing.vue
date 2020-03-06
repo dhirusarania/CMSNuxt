@@ -262,6 +262,21 @@
                   </form>
                 </div>
 
+
+                <div
+                  class="submit_listing_box"
+                  style="margin-top: 0px; padding-top: 0px"
+                >
+                  <h3>Pitch / Campaign</h3>
+                  <form class="form-alt">
+                    <div class="row">
+                      <div class="form-group col-xs-12">
+                        <div id="editor-container"></div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
                 <div class="from-list-lt">
                   <div class="form-group">
                     <button class="btn" type="submit" @click="submitStartup">
@@ -281,12 +296,14 @@
 <script>
   import Cookies from "js-cookie";
   import axios from "axios";
+  let EditorJS, Header, List, Image, quill;
   export default {
     middleware: "token-auth",
     data() {
       return {
         name: "",
         description: "",
+        description_pitch: "",
         founders: "",
         investors: "",
         team_size: "",
@@ -303,6 +320,28 @@
     },
 
     mounted() {
+
+      quill = new Quill("#editor-container", {
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, 3, 4, false] }],
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["image"],
+
+            [{ color: [] }, { background: [] }],
+            [{ font: [] }],
+            [{ align: [] }]
+          ]
+        },
+        placeholder: "Write Product Description here...",
+        theme: "snow"
+      });
+
+      quill.on("text-change", function() {
+        this.delta = quill.getContents();
+      });
+
       this.getCategories();
       this.getCountries();
       $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
@@ -440,6 +479,7 @@
         payload.append("key_team_members", this.key_members);
         payload.append("incubators", this.incubators);
         payload.append("accelerators", this.accelerators);
+        payload.append("pitch", JSON.stringify(quill.getContents()));
         payload.append("investors", this.investors);
         payload.append("date_of_launch", date);
         payload.append("name_of_founders", this.founders);

@@ -101,13 +101,10 @@
         <div class="row">
           <div class="col-12 hide-lg-product">
             <div class="tab">
-              <button
-                class="tablinks btn-activated"
-                id="product"
-                @click="openbtn('description')"
-              >Products</button>
+              <button class="tablinks btn-activated" id="product" @click="openbtn('description')">Products</button>
               <button class="tablinks" id="faq" @click="openbtn('reviews')">FAQ</button>
               <button class="tablinks" id="com" @click="openbtn('community')">Community</button>
+              <button class="tablinks" id="pit" @click="openbtn('pitch')">Pitch</button>
             </div>
 
             <div id="description" class="tabcontent">
@@ -160,6 +157,10 @@
 
             <div id="community" class="tabcontent">
               <p class="faq-11">Community</p>
+            </div>
+
+            <div id="pitch" class="tabcontent">
+              <p class="faq-11">Pitch</p>
             </div>
           </div>
         </div>
@@ -251,6 +252,7 @@ export default {
     openbtn: function(btnName) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");
+      console.log(tabcontent)
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
       }

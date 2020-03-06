@@ -46,6 +46,7 @@
                         id="location-search-data-store"
                         class="form-control"
                         name="search"
+                        autocomplete="off"
                         placeholder="Enter Keyword"
                         v-model="searchValue"
                         required
@@ -56,7 +57,7 @@
               </div>
               <div class="col-sm-3 col-md-2 text-right nopadding-right">
                 <div id="location-search-btn">
-                  <button type="submit" id="search-btn" @click="SearchFilter">
+                  <button type="button" id="search-btn" @click="SearchFilter">
                     <i class="fa fa-search"></i>Search
                   </button>
                 </div>
@@ -78,7 +79,8 @@
       />
       <recent-listing v-if="item.name === 'Recent Listings'" :startupList="startupList" />
       <register-startup
-        v-if="item.name === 'Register Startup'"
+        v-if="item.id > 3"
+        :static_data = item
         :register_startup="register_startup"
       />
     </div>
@@ -275,7 +277,8 @@ export default {
       loading_bool: true,
       categoryList: [],
       searchValue: "",
-      activeCategories: []
+      activeCategories: [],
+      static_data: [],
     };
   },
 
@@ -302,7 +305,14 @@ export default {
       .addClass("active")
       .siblings()
       .removeClass("active");
+
+    this.$store.dispatch("getActiveStaticComponents").then(res=>{
+      console.log(res)
+      this.static_data = res.data;
+    });
+
   },
+
 
   methods: {
     getStartups: function() {
@@ -582,11 +592,11 @@ export default {
       to right bottom,
       rgba(255, 255, 255, 0.219),
       rgba(255, 255, 255, 0.267)
-    ),
-    url("~static/images/back-finale.webp");
+    );
   width: 100%;
   min-height: 600px;
   background-size: cover;
+  background-color: #16110d;
   background-position: center;
 }
 .banner-text-1 {
