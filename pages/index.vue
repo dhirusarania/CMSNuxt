@@ -299,7 +299,7 @@ export default {
     if (window.location.href.includes("access_token")) {
       this.googleLogIn();
     }
-    const { data } = await this.$store.dispatch("getActiveComponentsGeneral", 1);
+    const { data } = await this.$store.dispatch("getActiveComponentsGeneral", 2);
     this.activeCategories = JSON.parse(data.value);
     $("#home")
       .addClass("active")
