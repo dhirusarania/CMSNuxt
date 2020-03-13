@@ -55,6 +55,24 @@ export const actions = {
                 });
         });
     },
+    getActiveComponentsGeneral({ commit, state }, id) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.getActiveComponents + id,
+                    contentType: "application/json"
+                        // headers: {
+                        //   Authorization: "Token " + localStorage.getItem("token")
+                        // }
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log("Error In HTTP Request - ", err);
+                });
+        });
+    },
     registerUser({ commit, state }, payload) {
         return new Promise((resolve, reject) => {
             axios({

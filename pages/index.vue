@@ -79,7 +79,7 @@
       />
       <recent-listing v-if="item.name === 'Recent Listings'" :startupList="startupList" />
       <register-startup
-        v-if="item.id > 3"
+        v-if="item.title"
         :static_data = item
         :register_startup="register_startup"
       />
@@ -299,7 +299,7 @@ export default {
     if (window.location.href.includes("access_token")) {
       this.googleLogIn();
     }
-    const { data } = await this.$store.dispatch("getActiveComponents");
+    const { data } = await this.$store.dispatch("getActiveComponentsGeneral", 1);
     this.activeCategories = JSON.parse(data.value);
     $("#home")
       .addClass("active")
