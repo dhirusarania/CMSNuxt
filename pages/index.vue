@@ -26,9 +26,9 @@
         <div class="row">
           <div class="col-sm-12 text-center">
             <div id="home-slider-item">
-              <span class="helpyou_item">{{ line1 }}</span>
-              <h1>{{ line2 }}</h1>
-              <!-- <p>Discover innovative startups and the people behind them</p> -->
+              <span class="helpyou_item">{{ title }}</span>
+              <h1>{{ line1 }}</h1>
+              <p>{{line2}}</p>
             </div>
             <div id="search-categorie-item-block">
               <!-- <form id="categorie-search-form"> -->
@@ -280,6 +280,7 @@ export default {
       password1: "",
       password2: "",
       header_img: "",
+      title: "",
       line1: "",
       line2: "",
       line3: "",
@@ -497,6 +498,7 @@ export default {
           .splice(0, 1)
           .map(item => {
             this.header_img = item.header_img;
+            this.title = item.title;
             this.line1 = item.header_text_1;
             this.line2 = item.header_text_2;
             this.line3 = item.header_text_3;
