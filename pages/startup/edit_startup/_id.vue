@@ -10,7 +10,7 @@
                 <nuxt-link to="/">Home</nuxt-link>
               </span>
               <i class="fa fa-circle"></i>
-              <nuxt-link to="">
+              <nuxt-link to>
                 <span>Edit Startup</span>
               </nuxt-link>
             </div>
@@ -70,11 +70,8 @@
                 </div>
               </div>
               <div class="col-md-9 col-sm-8 col-xs-12">
-                <div
-                  class="submit_listing_box"
-                  style="margin-bottom: 0px; padding-bottom: 0px"
-                >
-                  <h3>Description</h3>
+                <div class="submit_listing_box" style>
+                  <h3>Basic</h3>
                   <form class="form-alt">
                     <div class="form-group">
                       <label>Startup Name</label>
@@ -82,18 +79,27 @@
                     </div>
                     <div class="form-group">
                       <label>Startup Description</label>
-                      <textarea
-                        class="form-control"
-                        rows="5"
-                        v-model="description"
-                      ></textarea>
+                      <textarea class="form-control" rows="5" v-model="description"></textarea>
                     </div>
                   </form>
                 </div>
-                <div
-                  class="submit_listing_box"
-                  style="margin-top: 0px; padding-top: 0px"
-                >
+                <div class="submit_listing_box">
+                  <h3>Startup Banner</h3>
+                  <div class="fileupload_block">
+                    <input
+                      type="file"
+                      name="fileupload"
+                      id="file"
+                      ref="file"
+                      v-on:change="handleFileUpload()"
+                    />
+                    <div class="filepreview_img" v-if="imageAdded">
+                      <img :src="file_preview" alt="add image" />
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="submit_listing_box">
                   <h3>Attributes</h3>
                   <form class="form-alt">
                     <div class="row">
@@ -109,59 +115,31 @@
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Name of Founders</label>
-                        <input
-                          class="form-control"
-                          type="text"
-                          v-model="founders"
-                        />
+                        <input class="form-control" type="text" v-model="founders" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Investors</label>
-                        <input
-                          class="form-control"
-                          type="text"
-                          v-model="investors"
-                        />
+                        <input class="form-control" type="text" v-model="investors" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Team Size</label>
-                        <input
-                          class="form-control"
-                          type="number"
-                          v-model="team_size"
-                        />
+                        <input class="form-control" type="number" v-model="team_size" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Key Team Members</label>
-                        <input
-                          class="form-control"
-                          type="text"
-                          v-model="key_members"
-                        />
+                        <input class="form-control" type="text" v-model="key_members" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Incubators</label>
-                        <input
-                          class="form-control"
-                          type="text"
-                          v-model="incubators"
-                        />
+                        <input class="form-control" type="text" v-model="incubators" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Accelerators</label>
-                        <input
-                          class="form-control"
-                          type="text"
-                          v-model="accelerators"
-                        />
+                        <input class="form-control" type="text" v-model="accelerators" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Partnership Associations</label>
-                        <input
-                          class="form-control"
-                          type="text"
-                          v-model="partners"
-                        />
+                        <input class="form-control" type="text" v-model="partners" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Date of Launch</label>
@@ -174,11 +152,7 @@
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Year Founded</label>
-                        <input
-                          class="form-control"
-                          type="number"
-                          v-model="year"
-                        />
+                        <input class="form-control" type="number" v-model="year" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Country</label>
@@ -202,31 +176,42 @@
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>City</label>
-                        <select
-                          class="form-control selectcategory"
-                          id="city-select"
-                        >
+                        <select class="form-control selectcategory" id="city-select">
                           <option value="0">Select City</option>
                         </select>
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>What round of funding is on</label>
-                        <input
-                          class="form-control"
-                          type="number"
-                          v-model="funding_round"
-                        />
+                        <input class="form-control" type="number" v-model="funding_round" />
                       </div>
                     </div>
                   </form>
                 </div>
 
+                <div class="submit_listing_box">
+                  <h3>Pitch Campaign File</h3>
+                  <div v-if="pitch_file_name == ''">
+                    <p>No file uploaded yet</p>
+                  </div>
+                  <div v-else>
+                    <a :href="pitch_file_url" target="_blank">{{pitch_file_name}}</a>
+                  </div>
 
+                  <div class="fileupload_block">
+                    <input
+                      type="file"
+                      cc
+                      name="fileupload"
+                      id="pitch_file"
+                      accept=".pdf, .docx, .doc, .ppt"
+                      ref="pitch_file"
+                      v-on:change="handleFileUpload_pitch()"
+                    />
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
 
-                <div
-                  class="submit_listing_box"
-                  style="margin-top: 0px; padding-top: 0px"
-                >
+                <div class="submit_listing_box">
                   <h3>Pitch / Campaign</h3>
                   <form class="form-alt">
                     <div class="row">
@@ -237,12 +222,9 @@
                   </form>
                 </div>
 
-
                 <div class="from-list-lt">
                   <div class="form-group">
-                    <button class="btn" type="submit" @click="editStartup">
-                      Submit Startup
-                    </button>
+                    <button class="btn" type="submit" @click="editStartup">Submit Startup</button>
                   </div>
                 </div>
               </div>
@@ -255,306 +237,356 @@
 </template>
 
 <script>
-  import Cookies from "js-cookie";
-  import axios from "axios";
-  let EditorJS, Header, List, Image, quill;
-  export default {
-    middleware: "token-auth",
-    data() {
-      return {
-        name: "",
-        description: "",
-        founders: "",
-        investors: "",
-        team_size: "",
-        key_members: "",
-        incubators: "",
-        accelerators: "",
-        partners: "",
-        launch_date: "",
-        year: "",
-        category_id: "",
-        funding_round: ""
-      };
+import Cookies from "js-cookie";
+import axios from "axios";
+let EditorJS, Header, List, Image, quill;
+export default {
+  middleware: "token-auth",
+  data() {
+    return {
+      name: "",
+      description: "",
+      founders: "",
+      investors: "",
+      team_size: "",
+      key_members: "",
+      incubators: "",
+      accelerators: "",
+      partners: "",
+      launch_date: "",
+      year: "",
+      category_id: "",
+      imageAdded: false,
+      funding_round: "",
+      file_preview: "",
+      pitch_file: "",
+      pitch_file_name: "",
+      pitch_file_url: ""
+    };
+  },
+
+  mounted() {
+    quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
+
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
+      },
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
+
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
+    });
+
+    this.getCategories();
+    $("#user_profile")
+      .addClass("active")
+      .siblings()
+      .removeClass("active");
+    this.getStartUp();
+    setTimeout(function() {
+      this.getStartUp;
+    }, 100);
+    $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+  },
+  methods: {
+    handleFileUpload: function() {
+      this.file = this.$refs.file.files[0];
+      if (this.file != null && this.file != undefined && this.file != "") {
+        this.file_preview = URL.createObjectURL(this.file);
+        this.imageAdded = true;
+      } else {
+        this.imageAdded = false;
+      }
+    },
+    handleFileUpload_pitch: function() {
+      this.pitch_file = this.$refs.pitch_file.files[0];
+
+      if (
+        this.pitch_file != null &&
+        this.pitch_file != undefined &&
+        this.pitch_file != ""
+      ) {
+        this.pitch_file_url = URL.createObjectURL(this.pitch_file);
+        this.pitch_file_name = this.pitch_file.name;
+        this.imageAdded = true;
+      } else {
+        this.imageAdded = false;
+      }
+    },
+    getCategories: function() {
+      this.$store.dispatch("getCategories").then(res => {
+        this.category_length = res.data.length;
+
+        var select = document.getElementById("category-select");
+
+        const categoryObj = {};
+
+        res.data.map(item => {
+          categoryObj[item.id] = { category: item.category };
+        });
+
+        for (this.i in categoryObj) {
+          select.options[select.options.length] = new Option(
+            categoryObj[this.i].category,
+            this.i
+          );
+        }
+      });
+    },
+    logOutUser: function() {
+      var payload = new FormData();
+      payload.append("login_status", "false");
+      this.$store.dispatch("logOutUser", payload).then(res => {
+        // console.log(res)
+      });
+      localStorage.clear();
+      Cookies.remove("x-access-token");
+      this.$store.commit("authentication", false);
+      this.$router.push("/");
     },
 
-    mounted() {
+    getCountries: function() {
+      return axios.get("/json/countries.json").then(res => {
+        this.$store
+          .dispatch("getStartUp", this.$route.params.id)
+          .then(response => {
+            var countrieslist = res.data;
 
+            var newArray = countrieslist.filter(function(el) {
+              return el.countryName === response.data.country;
+            });
 
-      quill = new Quill("#editor-container", {
-        modules: {
-          toolbar: [
-            [{ header: [1, 2, 3, 4, false] }],
-            ["bold", "italic", "underline"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["image"],
+            newArray.map(item => {
+              var country_id = item.countryID;
+              var select = document.getElementById("country-select");
 
-            [{ color: [] }, { background: [] }],
-            [{ font: [] }],
-            [{ align: [] }]
-          ]
-        },
-        placeholder: "Write Product Description here...",
-        theme: "snow"
-      });
+              const countryObj = {};
 
-      quill.on("text-change", function() {
-        this.delta = quill.getContents();
-      });
-
-      this.getCategories();
-      $("#user_profile")
-        .addClass("active")
-        .siblings()
-        .removeClass("active");
-      this.getStartUp();
-      setTimeout(function() {
-        this.getStartUp;
-      }, 100);
-      $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-    },
-    methods: {
-      getCategories: function() {
-        this.$store.dispatch("getCategories").then(res => {
-          this.category_length = res.data.length;
-
-          var select = document.getElementById("category-select");
-
-          const categoryObj = {};
-
-          res.data.map(item => {
-            categoryObj[item.id] = { category: item.category };
-          });
-
-          for (this.i in categoryObj) {
-            select.options[select.options.length] = new Option(
-              categoryObj[this.i].category,
-              this.i
-            );
-          }
-        });
-      },
-      logOutUser: function() {
-        var payload = new FormData();
-        payload.append("login_status", "false");
-        this.$store.dispatch("logOutUser", payload).then(res => {
-          // console.log(res)
-        });
-        localStorage.clear();
-        Cookies.remove("x-access-token");
-        this.$store.commit("authentication", false);
-        this.$router.push("/");
-      },
-
-      getCountries: function() {
-        return axios.get("/json/countries.json").then(res => {
-          this.$store
-            .dispatch("getStartUp", this.$route.params.id)
-            .then(response => {
-              var countrieslist = res.data;
-              var newArray = countrieslist.filter(function(el) {
-                return el.countryName === response.data.country;
+              res.data.map(item => {
+                countryObj[item.countryID] = { country: item.countryName };
               });
-              newArray.map(item => {
-                var country_id = item.countryID;
-                var select = document.getElementById("country-select");
 
-                const countryObj = {};
+              for (this.i in countryObj) {
+                select.options[select.options.length] = new Option(
+                  countryObj[this.i].country,
+                  this.i
+                );
+              }
 
-                res.data.map(item => {
-                  countryObj[item.countryID] = { country: item.countryName };
+              $("#country-select").val(country_id);
+              this.getCountry();
+
+              var id = $("#country-select").val();
+              return axios.get("/json/states.json").then(response1 => {
+                var states = response1.data;
+                var stateArray = states.filter(function(el) {
+                  return el.stateName === response.data.state;
                 });
-
-                for (this.i in countryObj) {
-                  select.options[select.options.length] = new Option(
-                    countryObj[this.i].country,
-                    this.i
-                  );
-                }
-
-                $("#country-select").val(country_id);
-                this.getCountry();
-
-                var id = $("#country-select").val();
-                return axios.get("/json/states.json").then(response1 => {
-                  var states = response1.data;
-                  var stateArray = states.filter(function(el) {
-                    return el.stateName === response.data.state;
-                  });
-                  stateArray.map(item => {
-                    $("#state-select").val(item.stateID);
-                    this.getState();
-                    var StateId = $("#state-select").val();
-                    return axios.get("/json/cities.json").then(response2 => {
-                      var cities = response2.data;
-                      var cityArray = cities.filter(function(el) {
-                        return el.cityName === response.data.city;
-                      });
-                      cityArray.map(item => {
-                        $("#city-select").val(item.cityID);
-                      });
+                stateArray.map(item => {
+                  $("#state-select").val(item.stateID);
+                  this.getState();
+                  var StateId = $("#state-select").val();
+                  return axios.get("/json/cities.json").then(response2 => {
+                    var cities = response2.data;
+                    var cityArray = cities.filter(function(el) {
+                      return el.cityName === response.data.city;
+                    });
+                    cityArray.map(item => {
+                      $("#city-select").val(item.cityID);
                     });
                   });
-
-                  return {
-                    authors: res.data
-                  };
                 });
+
+                return {
+                  authors: res.data
+                };
               });
             });
-          return {
-            authors: res.data
-          };
-        });
-      },
-
-      getCountry: function() {
-        var id = $("#country-select").val();
-        return axios.get("/json/states.json").then(res => {
-          var states = res.data;
-          var newArray = states.filter(function(el) {
-            return el.countryID === id;
           });
+        return {
+          authors: res.data
+        };
+      });
+    },
 
-          var select = document.getElementById("state-select");
-          $("#state-select")
-            .find("option:gt(0)")
-            .remove();
-
-          const stateObj = {};
-
-          newArray.map(item => {
-            stateObj[item.stateID] = { state: item.stateName };
-          });
-
-          for (this.i in stateObj) {
-            select.options[select.options.length] = new Option(
-              stateObj[this.i].state,
-              this.i
-            );
-          }
-          return {
-            authors: res.data
-          };
+    getCountry: function() {
+      var id = $("#country-select").val();
+      return axios.get("/json/states.json").then(res => {
+        var states = res.data;
+        var newArray = states.filter(function(el) {
+          return el.countryID === id;
         });
-      },
 
-      getState: function() {
-        var id = $("#state-select").val();
-        return axios.get("/json/cities.json").then(res => {
-          var cities = res.data;
-          var newArray = cities.filter(function(el) {
-            return el.stateID === id;
-          });
+        var select = document.getElementById("state-select");
+        $("#state-select")
+          .find("option:gt(0)")
+          .remove();
 
-          var select = document.getElementById("city-select");
-          $("#city-select")
-            .find("option:gt(0)")
-            .remove();
+        const stateObj = {};
 
-          const cityObj = {};
-
-          newArray.map(item => {
-            cityObj[item.cityID] = { city: item.cityName };
-          });
-
-          for (this.i in cityObj) {
-            select.options[select.options.length] = new Option(
-              cityObj[this.i].city,
-              this.i
-            );
-          }
-          return {
-            authors: res.data
-          };
+        newArray.map(item => {
+          stateObj[item.stateID] = { state: item.stateName };
         });
-      },
 
-      getStartUp: function() {
-        this.$store.dispatch("getStartUp", this.$route.params.id).then(res => {
-          this.name = res.data.name;
-          this.description = res.data.description;
-          this.founders = res.data.name_of_founders;
-          this.investors = res.data.investors;
-          this.team_size = res.data.team_size;
-          this.key_members = res.data.key_team_members;
-          this.incubators = res.data.incubators;
-          this.accelerators = res.data.accelerators;
-          this.partners = res.data.partnerships_associations;
-          this.launch_date = res.data.date_of_launch;
-          this.year = res.data.year_founded;
-          this.category_id = res.data.category;
-          this.funding_round = res.data.funding_round;
-          $("#category-select").val(res.data.category);
-          localStorage.setItem("startupId", res.data.id);
-          this.getCountries();
-          console.log(res.data)
-          quill.setContents(JSON.parse(res.data.pitch));
+        for (this.i in stateObj) {
+          select.options[select.options.length] = new Option(
+            stateObj[this.i].state,
+            this.i
+          );
+        }
+        return {
+          authors: res.data
+        };
+      });
+    },
+
+    getState: function() {
+      var id = $("#state-select").val();
+      return axios.get("/json/cities.json").then(res => {
+        var cities = res.data;
+        var newArray = cities.filter(function(el) {
+          return el.stateID === id;
         });
-      },
 
-      editStartup: function() {
-        var payload = new FormData();
-        // const cat_id = $("#category-select").val();
-        payload.append("added_by", localStorage.getItem("user_id"));
-        // payload.append("category", cat_id);
-        payload.append("name", this.name);
-        payload.append("description", this.description);
-        if (this.team_size !== null) {
-          payload.append("team_size", this.team_size);
-        }
-        if (this.key_members !== null) {
-          payload.append("key_team_members", this.key_members);
-        }
-        if (this.incubators !== null) {
-          payload.append("incubators", this.incubators);
-        }
-        if (this.accelerators !== null) {
-          payload.append("accelerators", this.accelerators);
-        }
-        if (this.incubators !== null) {
-          payload.append("investors", this.investors);
-        }
-        const date = $("#datepicker").val();
-        if (this.launch_date !== null) {
-          payload.append("date_of_launch", date);
-        }
-        if (this.founders !== null) {
-          payload.append("name_of_founders", this.founders);
-        }
-        if (this.year !== null) {
-          payload.append("year_founded", this.year);
-        }
+        var select = document.getElementById("city-select");
+        $("#city-select")
+          .find("option:gt(0)")
+          .remove();
 
-        payload.append("pitch", JSON.stringify(quill.getContents()));
+        const cityObj = {};
 
-        const country = $("#country-select :selected").text();
-        payload.append("country", country);
-        const state = $("#state-select :selected").text();
-        payload.append("state", state);
-        const city = $("#city-select :selected").text();
-        payload.append("city", city);
-        if (this.partners !== null) {
-          payload.append("partnerships_associations", this.partners);
-        }
-
-        if (this.funding_round !== null) {
-          payload.append("funding_round", this.funding_round);
-        }
-        const date_added = new Date();
-        const day = date_added.getDate();
-        const month = date_added.getMonth() + 1;
-        const year = date_added.getFullYear();
-        const added_dated = year + "-" + month + "-" + day;
-        payload.append("updated_by", localStorage.getItem("user_id"));
-        payload.append("updated_date", added_dated);
-        const category_id = $("#category-select").val();
-        payload.append("category", category_id);
-        this.$store.dispatch("editStartup", payload).then(res => {
-          this.$router.push("/startup/listing");
+        newArray.map(item => {
+          cityObj[item.cityID] = { city: item.cityName };
         });
+
+        for (this.i in cityObj) {
+          select.options[select.options.length] = new Option(
+            cityObj[this.i].city,
+            this.i
+          );
+        }
+        return {
+          authors: res.data
+        };
+      });
+    },
+
+    getStartUp: function() {
+      this.$store.dispatch("getStartUp", this.$route.params.id).then(res => {
+        this.name = res.data.name;
+        this.description = res.data.description;
+        this.founders = res.data.name_of_founders;
+        this.investors = res.data.investors;
+        this.team_size = res.data.team_size;
+        this.key_members = res.data.key_team_members;
+        this.incubators = res.data.incubators;
+        this.accelerators = res.data.accelerators;
+        this.partners = res.data.partnerships_associations;
+        this.launch_date = res.data.date_of_launch;
+        this.year = res.data.year_founded;
+        this.category_id = res.data.category;
+
+        if (
+          res.data.pitch_file != "" &&
+          res.data.pitch_file != null &&
+          res.data.pitch_file != undefined
+        ) {
+          this.pitch_file_name = res.data.pitch_file.split("/").pop();
+          this.pitch_file_url = res.data.pitch_file;
+        }
+
+        this.imageAdded = true;
+        this.file_preview = res.data.thumbnail;
+
+        this.funding_round = res.data.funding_round;
+        $("#category-select").val(res.data.category);
+        localStorage.setItem("startupId", res.data.id);
+        this.getCountries();
+        console.log(res.data);
+        quill.setContents(JSON.parse(res.data.pitch));
+      });
+    },
+
+    editStartup: function() {
+      var payload = new FormData();
+      // const cat_id = $("#category-select").val();
+      payload.append("added_by", localStorage.getItem("user_id"));
+      // payload.append("category", cat_id);
+      payload.append("name", this.name);
+      payload.append("description", this.description);
+      if (this.team_size !== null) {
+        payload.append("team_size", this.team_size);
       }
+      if (this.key_members !== null) {
+        payload.append("key_team_members", this.key_members);
+      }
+      if (this.incubators !== null) {
+        payload.append("incubators", this.incubators);
+      }
+      if (this.accelerators !== null) {
+        payload.append("accelerators", this.accelerators);
+      }
+      if (this.incubators !== null) {
+        payload.append("investors", this.investors);
+      }
+      const date = $("#datepicker").val();
+      if (this.launch_date !== null) {
+        payload.append("date_of_launch", date);
+      }
+      if (this.founders !== null) {
+        payload.append("name_of_founders", this.founders);
+      }
+      if (this.year !== null) {
+        payload.append("year_founded", this.year);
+      }
+
+      payload.append("pitch", JSON.stringify(quill.getContents()));
+
+      const country = $("#country-select :selected").text();
+      payload.append("country", country);
+      const state = $("#state-select :selected").text();
+      payload.append("state", state);
+      const city = $("#city-select :selected").text();
+      payload.append("city", city);
+      if (this.partners !== null) {
+        payload.append("partnerships_associations", this.partners);
+      }
+
+      if (this.funding_round !== null) {
+        payload.append("funding_round", this.funding_round);
+      }
+
+      if (this.pitch_file) {
+        payload.append("pitch_file", this.pitch_file);
+      }
+
+      if (this.file) {
+        payload.append("thumbnail", this.file);
+      }
+      const date_added = new Date();
+      const day = date_added.getDate();
+      const month = date_added.getMonth() + 1;
+      const year = date_added.getFullYear();
+      const added_dated = year + "-" + month + "-" + day;
+      payload.append("updated_by", localStorage.getItem("user_id"));
+      payload.append("updated_date", added_dated);
+      const category_id = $("#category-select").val();
+      payload.append("category", category_id);
+      this.$store.dispatch("editStartup", payload).then(res => {
+        this.$router.push("/startup/listing");
+      });
     }
-  };
+  }
+};
 </script>
 

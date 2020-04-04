@@ -76,7 +76,7 @@
                         <label>Update</label>
                         <div id="editor-container"></div>
                       </div>
-                      <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                      <!-- <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Update Video</label>
                         <p style="display: inline; float: left">Currently -</p>
                         <a
@@ -92,7 +92,7 @@
                           ref="file"
                           v-on:change="handleFileUpload()"
                         />
-                      </div>
+                      </div> -->
                     </div>
                   </form>
                 </div>
@@ -170,7 +170,7 @@
             this.video_name = res.data.update_video.slice(43);
           }
 
-          this.post = JSON.parse(res.data.latest_updates);
+          // this.post = JSON.parse(res.data.latest_updates);
           quill = new Quill("#editor-container", {
             modules: {
               toolbar: [
@@ -187,7 +187,9 @@
 
             theme: "snow" // or 'bubble'
           });
-          quill.setContents(this.post);
+          // quill.setContents(this.post);
+          console.log(res.data.latest_updates)
+          quill.container.firstChild.innerHTML = res.data.latest_updates
         });
       },
 
@@ -206,7 +208,7 @@
         const year = date_added.getFullYear();
         const added_dated = year + "-" + month + "-" + day;
         payload.append("updated_date", added_dated);
-        payload.append("latest_updates", JSON.stringify(quill.getContents()));
+        payload.append("latest_updates", quill.root.innerHTML);
         // payload.append("latest_updates", JSON.stringify(outputData.blocks));
         if (this.file) {
           payload.append("update_video", this.file);

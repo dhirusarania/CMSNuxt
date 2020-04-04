@@ -702,6 +702,7 @@ export const actions = {
     },
 
     googleLogIn({ commit, state }, payload) {
+        console.log(payload)
         return new Promise((resolve, reject) => {
             axios({
                     method: "POST",
@@ -922,6 +923,21 @@ export const actions = {
             axios({
                     method: "GET",
                     url: state.api.getActiveStaticComponents,
+                    contentType: "application/json"
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    },
+    getActiveStaticWebsiteComponents({ commit, state }) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.getActiveStaticWebsiteComponents,
                     contentType: "application/json"
                 })
                 .then(res => {

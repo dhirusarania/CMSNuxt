@@ -99,6 +99,8 @@ export const state = () => ({
 
     getActiveStaticComponents: url + "/get_static_components",
 
+    getActiveStaticWebsiteComponents: url + "/get_static_components_website",
+
     getFilteredStartups: url + "/startup_search?search=",
 
     productTestimonials: url + "/product_testimonials/",

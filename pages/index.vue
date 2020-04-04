@@ -32,34 +32,45 @@
             </div>
             <div id="search-categorie-item-block">
               <!-- <form id="categorie-search-form"> -->
-              <h1>Search any Startup Listing</h1>
-              <div class="col-sm-7 col-md-6 nopadding col-md-offset-2 col-sm-offset-1">
-                <div id="search-input">
-                  <!-- <div class="col-sm-3 nopadding">
-                    <select id="location-search-list" class="form-control">
+              <h1>{{ line3 }}</h1>
+              <div class="row" style="margin-top: 20px">
+                <div class="col-12">
+                  <div
+                    id="search-input"
+                    style="display: flex; width: 100%;justify-content: center;"
+                  >
+                    <input
+                      style="max-width: 600px"
+                      id="location-search-data-store"
+                      class="form-control"
+                      name="search"
+                      autocomplete="off"
+                      placeholder="Enter Keyword"
+                      v-model="searchValue"
+                      required
+                    />
+                    <select
+                      id="location-search-list"
+                      style="width: 170px;margin-left: 20px;"
+                      class="form-control"
+                      v-model="search_category"
+                    >
                       <option value="0">Select Category</option>
+                      <option v-for="p in categoryList" :key="p.id" :value="p.id">{{p.category}}</option>
                     </select>
-                  </div>-->
-                  <div class="col-sm-12 nopadding">
-                    <div class="form-group">
-                      <input
-                        id="location-search-data-store"
-                        class="form-control"
-                        name="search"
-                        autocomplete="off"
-                        placeholder="Enter Keyword"
-                        v-model="searchValue"
-                        required
-                      />
-                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-sm-3 col-md-2 text-right nopadding-right">
-                <div id="location-search-btn">
-                  <button type="button" id="search-btn" @click="SearchFilter">
-                    <i class="fa fa-search"></i>Search
-                  </button>
+                <div class="col-12 nopadding-right" style="margin-top: 20px">
+                  <div id="location-search-btn">
+                    <button
+                      type="button"
+                      id="search-btn"
+                      style="width: 200px"
+                      @click="SearchFilter"
+                    >
+                      <i class="fa fa-search"></i>Search
+                    </button>
+                  </div>
                 </div>
               </div>
               <!-- </form> -->
@@ -78,11 +89,7 @@
         :getListing="getListing"
       />
       <recent-listing v-if="item.name === 'Recent Listings'" :startupList="startupList" />
-      <register-startup
-        v-if="item.title"
-        :static_data = item
-        :register_startup="register_startup"
-      />
+      <register-startup v-if="item.title" :static_data="item" :register_startup="register_startup" />
     </div>
 
     <!--================================ Login and Register Forms ===========================================-->
@@ -150,6 +157,11 @@
                 <div style="display: flex; justify-content: center">
                   <button class="mybtn2" @click="google">
                     <i class="fa fa-google mybtn1"></i>Continue with Google
+                  </button>
+                </div>
+                <div style="display: flex; justify-content: center;margin-top: 20px">
+                  <button class="mybtn2" @click="facebook">
+                    <i class="fa fa-facebook mybtn1"></i>Continue with Facebook
                   </button>
                 </div>
               </div>
@@ -270,6 +282,7 @@ export default {
       header_img: "",
       line1: "",
       line2: "",
+      line3: "",
       startupList: [],
       startup_count: "",
       user_count: "",
@@ -279,6 +292,7 @@ export default {
       searchValue: "",
       activeCategories: [],
       static_data: [],
+      search_category: 0
     };
   },
 
@@ -292,29 +306,51 @@ export default {
 
   async mounted() {
     // this.getCategories();
+    this.getHomeCMS();
     this.getStartups();
     this.getUserCount();
-    this.getHomeCMS();
     this.getFeaturedStartups();
     if (window.location.href.includes("access_token")) {
       this.googleLogIn();
+      this.facebookLogin();
     }
-    const { data } = await this.$store.dispatch("getActiveComponentsGeneral", 2);
-    this.activeCategories = JSON.parse(data.value);
+
     $("#home")
       .addClass("active")
       .siblings()
       .removeClass("active");
 
-    this.$store.dispatch("getActiveStaticComponents").then(res=>{
-      console.log(res)
+    this.$store.dispatch("getActiveStaticComponents").then(res => {
+      console.log(res);
       this.static_data = res.data;
+      // this.static_data.filter(v => (v.isStatic = 1));
+      this.getActiveComponent();
     });
-
   },
 
-
   methods: {
+    getActiveComponent: function() {
+      var that = this;
+      this.$store.dispatch("getActiveComponentsGeneral", 2).then(res => {
+        this.activeCategories = JSON.parse(res.data.value);
+
+        this.activeCategories = this.activeCategories.map(function(
+          item,
+          index
+        ) {
+          console.log(item.id);
+          var a = that.static_data.filter(v => v.id == item.id);
+          console.log(a);
+          if (a.length > 0) {
+            item = a[0];
+          }
+          console.log(item);
+          return item;
+        });
+
+        console.log(this.activeCategories);
+      });
+    },
     getStartups: function() {
       this.$store.dispatch("getStartups").then(res => {
         this.startup_count = res.data.length;
@@ -463,6 +499,7 @@ export default {
             this.header_img = item.header_img;
             this.line1 = item.header_text_1;
             this.line2 = item.header_text_2;
+            this.line3 = item.header_text_3;
           });
       });
     },
@@ -470,6 +507,11 @@ export default {
     async google() {
       $("#closeLogin").click();
       await this.$auth.loginWith("google").catch(e => {});
+    },
+
+    async facebook() {
+      $("#closeLogin").click();
+      await this.$auth.loginWith("facebook").catch(e => {});
     },
 
     googleLogIn: function() {
@@ -490,11 +532,46 @@ export default {
         new_payload.append("backend", "google-oauth2");
         new_payload.append(
           "client_id",
-          "oyBLYzEeUfq1xwNYUscD0oF9rH8Gdm0FgYr8unCH"
+          "VWCV9m8ap325uaA3G7Uize8V8XVr1jlMFNXQdU6z"
         );
         new_payload.append(
           "client_secret",
-          "1zxuIPtXtsHlzaAEfUNUo7Oqt1OOykvGaX8CLVRqtuCN1KYvRDgdPtEH0p1adprhzX6hH0K9Xd2duN8rdx7184JzFM91tpWT0SqPTu6GEt2hi7M7Ms1QqA9DkF9MlrSk"
+          "PiQxB3XeptIPSu4twnXjFUESfFWT2kWXgBgbqWtAxyt16PBcUbxjqKGYs3y1dEnuvKSNXPUP1j78ZoiTBHe4fCdO24orjZJnAVWW3YMCt3gn911bjqMm3ZkiLi8ilM95"
+        );
+        payload.append("oauth", true);
+        this.$store.dispatch("getBearerToken", new_payload).then(res => {
+          localStorage.setItem("bearer", "Bearer " + res.data.access_token);
+          this.$store.commit("bearer", res.data.access_token);
+          this.$store.commit("authentication", true);
+          this.$router.push("/startup/listing");
+        });
+      });
+    },
+
+
+    facebookLogin: function() {
+      this.$store.commit("bearer");
+      var payload = new FormData();
+      var provider = "facebook";
+      payload.append("provider", "facebook");
+      this.token = window.location.href
+        .split("#")[1]
+        .split("=")[2]
+        .split("&")[0];
+      payload.append("access_token", "EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD");
+      this.$store.dispatch("googleLogIn", payload).then(res => {
+        localStorage.setItem("user_id", res.data.id);
+        var new_payload = new FormData();
+        new_payload.append("grant_type", "convert_token");
+        new_payload.append("token", "EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD");
+        new_payload.append("backend", "facebook");
+        new_payload.append(
+          "client_id",
+          "VWCV9m8ap325uaA3G7Uize8V8XVr1jlMFNXQdU6z"
+        );
+        new_payload.append(
+          "client_secret",
+          "PiQxB3XeptIPSu4twnXjFUESfFWT2kWXgBgbqWtAxyt16PBcUbxjqKGYs3y1dEnuvKSNXPUP1j78ZoiTBHe4fCdO24orjZJnAVWW3YMCt3gn911bjqMm3ZkiLi8ilM95"
         );
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {
@@ -521,7 +598,11 @@ export default {
 
     SearchFilter: function() {
       if (this.searchValue != "") {
-        this.$router.push("/startup/all_startups?" + this.searchValue);
+        if(this.search_category == 0){
+          this.$router.push("/startup/all_startups?" + this.searchValue);
+        }else{
+          this.$router.push("/startup/all_startups?" + this.searchValue + "&category=" + this.search_category);
+        }
       }
     }
   }
@@ -530,11 +611,11 @@ export default {
 
 <style>
 #search-input select.form-control {
-  border-radius: 3px 0px 0px 3px;
+  border-radius: 0;
 }
 
 #search-input input.form-control {
-  border-radius: 30px;
+  border-radius: 0 !important;
 }
 
 .listing-form-field a {
@@ -589,10 +670,10 @@ export default {
 
 .st-sb-back {
   background: linear-gradient(
-      to right bottom,
-      rgba(255, 255, 255, 0.219),
-      rgba(255, 255, 255, 0.267)
-    );
+    to right bottom,
+    rgba(255, 255, 255, 0.219),
+    rgba(255, 255, 255, 0.267)
+  );
   width: 100%;
   min-height: 600px;
   background-size: cover;
@@ -623,7 +704,7 @@ export default {
   color: #16110d;
   font-family: GothamRounded;
   font-size: 22px;
-  font-weight: 600;
+  /* font-weight: 600; */
   width: 50%;
 }
 

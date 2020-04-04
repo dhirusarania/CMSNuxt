@@ -418,11 +418,11 @@ export default {
         new_payload.append("backend", "google-oauth2");
         new_payload.append(
           "client_id",
-          "oyBLYzEeUfq1xwNYUscD0oF9rH8Gdm0FgYr8unCH"
+          "VWCV9m8ap325uaA3G7Uize8V8XVr1jlMFNXQdU6z"
         );
         new_payload.append(
           "client_secret",
-          "1zxuIPtXtsHlzaAEfUNUo7Oqt1OOykvGaX8CLVRqtuCN1KYvRDgdPtEH0p1adprhzX6hH0K9Xd2duN8rdx7184JzFM91tpWT0SqPTu6GEt2hi7M7Ms1QqA9DkF9MlrSk"
+          "PiQxB3XeptIPSu4twnXjFUESfFWT2kWXgBgbqWtAxyt16PBcUbxjqKGYs3y1dEnuvKSNXPUP1j78ZoiTBHe4fCdO24orjZJnAVWW3YMCt3gn911bjqMm3ZkiLi8ilM95"
         );
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {

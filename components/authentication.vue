@@ -18,9 +18,7 @@
               data-dismiss="modal"
               aria-hidden="true"
               id="closeLogin"
-            >
-              &times;
-            </button>
+            >&times;</button>
             <h4 class="modal-title" id="myModalLabel">Login</h4>
           </div>
           <div class="modal-body">
@@ -46,12 +44,8 @@
                     v-model="password"
                   />
                 </div>
-                <div
-                  class="listing-form-field clearfix margin-top-20 margin-bottom-20"
-                >
-                  <a href="#" style="display: block; text-align: left"
-                    >Forgot Password?</a
-                  >
+                <div class="listing-form-field clearfix margin-top-20 margin-bottom-20">
+                  <a href="#" style="display: block; text-align: left">Forgot Password?</a>
                 </div>
                 <div class="listing-form-field">
                   <input
@@ -68,6 +62,11 @@
                 <div style="display: flex; justify-content: center">
                   <button class="mybtn2" @click="google">
                     <i class="fa fa-google mybtn1"></i>Continue with Google
+                  </button>
+                </div>
+                <div style="display: flex; justify-content: center;margin-top: 20px">
+                  <button class="mybtn2" @click="facebook">
+                    <i class="fa fa-facebook mybtn1"></i>Continue with Facebook
                   </button>
                 </div>
               </div>
@@ -94,9 +93,7 @@
               data-dismiss="modal"
               aria-hidden="true"
               id="closeSignUp"
-            >
-              &times;
-            </button>
+            >&times;</button>
             <h4 class="modal-title" id="myModalLabel2">Registration</h4>
           </div>
           <div class="modal-body">
@@ -159,174 +156,213 @@
 </template>
 
 <script>
-  import axios from "axios";
-  import Cookies from "js-cookie";
-  let Swal;
+import axios from "axios";
+import Cookies from "js-cookie";
+let Swal;
 
-  if (process.browser) {
-    Swal = require("sweetalert2");
-  }
-  export default {
-    data() {
-      return {
-        username: "",
-        password: "",
-        email: "",
-        password1: "",
-        password2: ""
-      };
-    },
+if (process.browser) {
+  Swal = require("sweetalert2");
+}
+export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+      email: "",
+      password1: "",
+      password2: ""
+    };
+  },
 
-    mounted() {
-      if (window.location.href.includes("access_token")) {
-        this.googleLogIn();
-      }
-    },
-
-    methods: {
-      logInUser: function() {
-        var payload = new FormData();
-        payload.append("email", this.email);
-        payload.append("password", this.password);
-        axios({
-          method: "POST",
-          url: this.$store.state.api.logInUser,
-          data: payload
-        })
-          .then(res => {
-            const token = res.data.token;
-            Cookies.set("x-access-token", res.data.token);
-
-            const user_id = res.data.id;
-
-            localStorage.setItem("bearer", "token " + token);
-
-            localStorage.setItem("user_id", user_id);
-
-            localStorage.setItem("username", res.data.username);
-
-            axios.defaults.headers.common["Authorization"] = token;
-
-            this.$store.commit("authentication", true);
-            this.$store.commit("token", token);
-
-            $("#closeLogin").click();
-            Swal.fire({
-              text: "Welcome " + res.data.username,
-              icon: "success",
-              confirmButtonText: "OK"
-            });
-            this.$router.push("/startup/listing");
-          })
-          .catch(err => {
-            alert("Invalid user credentials!");
-          });
-      },
-
-      registerUser: function() {
-        var payload = new FormData();
-        payload.append("username", this.username);
-        payload.append("email", this.email);
-        if (
-          this.password1 === this.password2 &&
-          this.username !== "" &&
-          this.email !== "" &&
-          this.password1 !== "" &&
-          this.password2 !== ""
-        ) {
-          payload.append("password", this.password1);
-          this.$store.dispatch("registerUser", payload).then(res => {
-            $("#closeSignUp").click();
-            // alert(
-            //   "User with username " +
-            //     payload.get("username") +
-            //     " created successfully"
-            // );
-
-            var payload1 = new FormData();
-            payload1.append("email", this.email);
-            payload1.append("password", this.password);
-            axios({
-              method: "POST",
-              url: this.$store.state.api.logInUser,
-              data: payload
-            })
-              .then(res => {
-                const token = res.data.token;
-                Cookies.set("x-access-token", res.data.token);
-
-                const user_id = res.data.id;
-
-                localStorage.setItem("bearer", "token " + token);
-
-                localStorage.setItem("user_id", user_id);
-
-                localStorage.setItem("username", res.data.username);
-
-                axios.defaults.headers.common["Authorization"] = token;
-
-                this.$store.commit("authentication", true);
-                this.$store.commit("token", token);
-
-                $("#closeLogin").click();
-                Swal.fire({
-                  text: "Welcome " + res.data.username,
-                  icon: "success",
-                  confirmButtonText: "OK"
-                });
-                this.$router.push("/startup/listing");
-              })
-              .catch(err => {
-                alert("Invalid user credentials!");
-              });
-          });
-        } else {
-          alert("Invalid form!");
-        }
-      },
-
-      async google() {
-        await this.$auth.loginWith("google").catch(e => {
-          // this.$toast.show("Error", { icon: "fingerprint" });
-          console.log(e);
-        });
-      },
-
-      googleLogIn: function() {
-        this.$store.commit("bearer");
-        var payload = new FormData();
-        var provider = "goole-oauth-2";
-        payload.append("provider", "google-oauth2");
-        this.token = window.location.href
-          .split("#")[1]
-          .split("=")[2]
-          .split("&")[0];
-        payload.append("access_token", this.token);
-        this.$store.dispatch("googleLogIn", payload).then(res => {
-          localStorage.setItem("user_id", res.data.id);
-          var new_payload = new FormData();
-          new_payload.append("grant_type", "convert_token");
-          new_payload.append("token", this.token);
-          new_payload.append("backend", "google-oauth2");
-          new_payload.append(
-            "client_id",
-            "oyBLYzEeUfq1xwNYUscD0oF9rH8Gdm0FgYr8unCH"
-          );
-          new_payload.append(
-            "client_secret",
-            "1zxuIPtXtsHlzaAEfUNUo7Oqt1OOykvGaX8CLVRqtuCN1KYvRDgdPtEH0p1adprhzX6hH0K9Xd2duN8rdx7184JzFM91tpWT0SqPTu6GEt2hi7M7Ms1QqA9DkF9MlrSk"
-          );
-          payload.append("oauth", true);
-          this.$store.dispatch("getBearerToken", new_payload).then(res => {
-            localStorage.setItem("bearer", "Bearer " + res.data.access_token);
-            this.$store.commit("bearer", res.data.access_token);
-            this.$store.commit("authentication", true);
-            this.$router.push("/startup/listing");
-          });
-        });
-      }
+  mounted() {
+    if (window.location.href.includes("access_token")) {
+      this.googleLogIn();
+       this.facebookLogin();
     }
-  };
+  },
+
+  methods: {
+    logInUser: function() {
+      var payload = new FormData();
+      payload.append("email", this.email);
+      payload.append("password", this.password);
+      axios({
+        method: "POST",
+        url: this.$store.state.api.logInUser,
+        data: payload
+      })
+        .then(res => {
+          const token = res.data.token;
+          Cookies.set("x-access-token", res.data.token);
+
+          const user_id = res.data.id;
+
+          localStorage.setItem("bearer", "token " + token);
+
+          localStorage.setItem("user_id", user_id);
+
+          localStorage.setItem("username", res.data.username);
+
+          axios.defaults.headers.common["Authorization"] = token;
+
+          this.$store.commit("authentication", true);
+          this.$store.commit("token", token);
+
+          $("#closeLogin").click();
+          Swal.fire({
+            text: "Welcome " + res.data.username,
+            icon: "success",
+            confirmButtonText: "OK"
+          });
+          this.$router.push("/startup/listing");
+        })
+        .catch(err => {
+          alert("Invalid user credentials!");
+        });
+    },
+
+    registerUser: function() {
+      var payload = new FormData();
+      payload.append("username", this.username);
+      payload.append("email", this.email);
+      if (
+        this.password1 === this.password2 &&
+        this.username !== "" &&
+        this.email !== "" &&
+        this.password1 !== "" &&
+        this.password2 !== ""
+      ) {
+        payload.append("password", this.password1);
+        this.$store.dispatch("registerUser", payload).then(res => {
+          $("#closeSignUp").click();
+          // alert(
+          //   "User with username " +
+          //     payload.get("username") +
+          //     " created successfully"
+          // );
+
+          var payload1 = new FormData();
+          payload1.append("email", this.email);
+          payload1.append("password", this.password);
+          axios({
+            method: "POST",
+            url: this.$store.state.api.logInUser,
+            data: payload
+          })
+            .then(res => {
+              const token = res.data.token;
+              Cookies.set("x-access-token", res.data.token);
+
+              const user_id = res.data.id;
+
+              localStorage.setItem("bearer", "token " + token);
+
+              localStorage.setItem("user_id", user_id);
+
+              localStorage.setItem("username", res.data.username);
+
+              axios.defaults.headers.common["Authorization"] = token;
+
+              this.$store.commit("authentication", true);
+              this.$store.commit("token", token);
+
+              $("#closeLogin").click();
+              Swal.fire({
+                text: "Welcome " + res.data.username,
+                icon: "success",
+                confirmButtonText: "OK"
+              });
+              this.$router.push("/startup/listing");
+            })
+            .catch(err => {
+              alert("Invalid user credentials!");
+            });
+        });
+      } else {
+        alert("Invalid form!");
+      }
+    },
+
+    async google() {
+      await this.$auth.loginWith("google").catch(e => {
+        // this.$toast.show("Error", { icon: "fingerprint" });
+        console.log(e);
+      });
+    },
+
+    async facebook() {
+      $("#closeLogin").click();
+      await this.$auth.loginWith("facebook").catch(e => {});
+    },
+
+    googleLogIn: function() {
+      this.$store.commit("bearer");
+      var payload = new FormData();
+      var provider = "goole-oauth-2";
+      payload.append("provider", "google-oauth2");
+      this.token = window.location.href
+        .split("#")[1]
+        .split("=")[2]
+        .split("&")[0];
+      payload.append("access_token", this.token);
+      this.$store.dispatch("googleLogIn", payload).then(res => {
+        localStorage.setItem("user_id", res.data.id);
+        var new_payload = new FormData();
+        new_payload.append("grant_type", "convert_token");
+        new_payload.append("token", this.token);
+        new_payload.append("backend", "google-oauth2");
+        new_payload.append("client_id", process.env.client_id);
+        new_payload.append("client_secret", process.env.client_secret);
+        payload.append("oauth", true);
+        this.$store.dispatch("getBearerToken", new_payload).then(res => {
+          localStorage.setItem("bearer", "Bearer " + res.data.access_token);
+          this.$store.commit("bearer", res.data.access_token);
+          this.$store.commit("authentication", true);
+          this.$router.push("/startup/listing");
+        });
+      });
+    },
+    facebookLogin: function() {
+      this.$store.commit("bearer");
+      var payload = new FormData();
+      var provider = "facebook";
+      payload.append("provider", "facebook");
+      this.token = window.location.href
+        .split("#")[1]
+        .split("=")[2]
+        .split("&")[0];
+      payload.append(
+        "access_token",
+        "EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD"
+      );
+      this.$store.dispatch("googleLogIn", payload).then(res => {
+        localStorage.setItem("user_id", res.data.id);
+        var new_payload = new FormData();
+        new_payload.append("grant_type", "convert_token");
+        new_payload.append(
+          "token",
+          "EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD"
+        );
+        new_payload.append("backend", "facebook");
+        new_payload.append(
+          "client_id",
+          "VWCV9m8ap325uaA3G7Uize8V8XVr1jlMFNXQdU6z"
+        );
+        new_payload.append(
+          "client_secret",
+          "PiQxB3XeptIPSu4twnXjFUESfFWT2kWXgBgbqWtAxyt16PBcUbxjqKGYs3y1dEnuvKSNXPUP1j78ZoiTBHe4fCdO24orjZJnAVWW3YMCt3gn911bjqMm3ZkiLi8ilM95"
+        );
+        payload.append("oauth", true);
+        this.$store.dispatch("getBearerToken", new_payload).then(res => {
+          localStorage.setItem("bearer", "Bearer " + res.data.access_token);
+          this.$store.commit("bearer", res.data.access_token);
+          this.$store.commit("authentication", true);
+          this.$router.push("/startup/listing");
+        });
+      });
+    }
+  }
+};
 </script>
 
 <style>

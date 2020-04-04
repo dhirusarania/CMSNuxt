@@ -39,15 +39,24 @@
                 <div class="row">
                   <div class="col-12 col-sm-8">
                     <video
+                      preload="metadata"
                       id="player"
-                      poster="../images/pro_img.jpg"
                       playsinline
                       controls
                       style="width: 100%;"
+                      v-if="!isVideo"
                     >
                       <source :src="product_video" type="video/mp4" />
                       <source :src="product_video" type="video/webm" />
                     </video>
+                    <div v-else class="plyr__video-embed" id="player">
+                      <iframe
+                        :src="video_url"
+                        allowfullscreen
+                        allowtransparency
+                        allow="autoplay"
+                      ></iframe>
+                    </div>
                   </div>
                   <div class="col-12 col-sm-4">
                     <hr style="margin-top: 0px; border: 3px solid #009e74" />
@@ -60,21 +69,13 @@
 
                     <p class="st-text-2">{{ stage }}</p>
                     <p class="st-sub-text-2">
-                      <i
-                        class="fa fa-angle-double-right"
-                        aria-hidden="true"
-                        style="color: #009e74"
-                      ></i>
+                      <i class="fa fa-angle-double-right" aria-hidden="true" style="color: #009e74"></i>
                       stage
                     </p>
 
                     <p class="st-text-3">{{ product_name }}</p>
                     <p class="st-sub-text-3">
-                      <i
-                        class="fa fa-product-hunt"
-                        aria-hidden="true"
-                        style="color: #009e74"
-                      ></i>
+                      <i class="fa fa-product-hunt" aria-hidden="true" style="color: #009e74"></i>
                       product name
                     </p>
 
@@ -92,11 +93,7 @@
 
                     <p class="st-text-2">{{ date_added }}</p>
                     <p class="st-sub-text-2">
-                      <i
-                        class="fa fa-calendar"
-                        aria-hidden="true"
-                        style="color: #009e74"
-                      ></i>
+                      <i class="fa fa-calendar" aria-hidden="true" style="color: #009e74"></i>
                       date added
                     </p>
 
@@ -105,47 +102,32 @@
                       <i class="fa fa-users" style="color: #009e74"></i> number
                       of users/downloads
                     </p>
-                    <button class="st-btn-11">Button</button>
+                    <button class="st-btn-11">Back This Product</button>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="col-12 hide-lg-product">
+                  <div class="col-12 hide-lg-product" style="padding: 0 15px">
                     <div class="tab">
-                      <button
-                        class="tablinks"
-                        id="product"
-                        @click="openbtn('description')"
-                      >
-                        Details
-                      </button>
-                      <button
-                        class="tablinks"
-                        id="faq"
-                        @click="openbtn('reviews')"
-                      >
-                        Updates
-                      </button>
+                      <button class="tablinks" id="product" @click="openbtn('description')">Details</button>
+                      <button class="tablinks" id="faq" @click="openbtn('reviews')">Updates</button>
                       <button
                         class="tablinks"
                         id="test"
                         @click="openbtn('testimonials')"
-                      >
-                        Testimonials
-                      </button>
-                      <button
+                      >Testimonials</button>
+                      <!-- <button
                         class="tablinks"
                         id="rate"
                         @click="openbtn('rankings')"
-                      >
-                        Rankings/Ratings
-                      </button>
+                      >Rankings/Ratings</button>-->
                     </div>
 
                     <div id="description" class="tabcontent">
-                      <div class="submit_listing_box">
+                      <div class="submit_listing_box" style="padding-top: 20px">
                         <div
                           id="editor-container"
+                          class="no-padding-editor"
                           style="background-color: white"
                         ></div>
                       </div>
@@ -155,49 +137,17 @@
                       <div v-if="pro_bool" class="submit_listing_box">
                         <p class="faq-11">No product updates available</p>
                       </div>
-                      <div class="submit_listing_box">
-                        <div
-                          v-for="(l, m) in update_list"
-                          :key="m"
-                          class="my-style"
-                        >
-                          <h1 style="border: none">
-                            <span
-                              style="color: #009e74; text-shadow: 2px 3px #e7e7e7; display: block"
-                              >Product Update</span
-                            >
-                            <i
-                              class="fa fa-calendar"
-                              style="color: #009e74"
-                            ></i>
-                            <span
-                              style="color: #009e74; text-shadow: 2px 2px #e7e7e7"
-                              >Added Date: {{ l.added_date }}</span
-                            >
-                          </h1>
-                          <div class="row">
-                            <div class="col-12 col-md-6">
-                              <video
-                                id="player"
-                                poster="../../../images/pro_img.jpg"
-                                playsinline
-                                controls
-                                style="margin-top: 20px; display: block; margin-left: auto; margin-right: auto; width: 100%"
-                              >
-                                <source
-                                  :src="l.update_video"
-                                  type="video/mp4"
-                                />
-                                <source
-                                  :src="l.update_video"
-                                  type="video/webm"
-                                />
-                              </video>
-                            </div>
-                            <div class="col-12 col-md-6">
-                              <div class="update-container"></div>
-                            </div>
-                          </div>
+                      <div class="submit_listing_box my-style">
+                        <!-- Yet another update -->
+
+                        <div v-for="(l, m) in update_list" :key="m">
+                          <vue-timeline-update
+                            :date="new Date(l.added_date)"
+                            :description="l.latest_updates"
+                            icon="code"
+                            color="white"
+                            is-last
+                          />
                         </div>
                       </div>
                     </div>
@@ -205,11 +155,7 @@
                     <div id="testimonials" class="tabcontent">
                       <div class="submit_listing_box" v-if="testimonial_bool">
                         <!-- <p class="faq-11"></p> -->
-                        <div
-                          id="myCarousel"
-                          class="carousel slide"
-                          data-ride="carousel"
-                        >
+                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
                           <!-- Indicators -->
                           <!-- <ol class="carousel-indicators">
                             <li
@@ -225,7 +171,7 @@
                               data-target="#myCarousel"
                               data-slide-to="2"
                             ></li>
-                          </ol> -->
+                          </ol>-->
 
                           <!-- Wrapper for slides -->
                           <div class="carousel-inner">
@@ -236,20 +182,13 @@
                               class="item"
                               :class="i === 0 ? 'active' : ''"
                             >
-                              <img
-                                :src="item.userImage"
-                                class="testimonial_img"
-                              />
+                              <img :src="item.userImage" class="testimonial_img" />
                               <p
                                 class="faq-11"
                                 style="text-align: center !important"
-                              >
-                                {{ item.userName }}
-                              </p>
+                              >{{ item.userName }}</p>
                               <br />
-                              <p style="text-align: center">
-                                {{ item.testimonial }}
-                              </p>
+                              <p style="text-align: center">{{ item.testimonial }}</p>
                             </div>
                             <!-- </div> -->
 
@@ -259,28 +198,16 @@
 
                             <div class="item">
                               <img src="ny.jpg" alt="New York" />
-                            </div> -->
+                            </div>-->
                           </div>
 
                           <!-- Left and right controls -->
-                          <a
-                            class="left carousel-control"
-                            href="#myCarousel"
-                            data-slide="prev"
-                          >
-                            <span
-                              class="glyphicon glyphicon-chevron-left"
-                            ></span>
+                          <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
                             <span class="sr-only">Previous</span>
                           </a>
-                          <a
-                            class="right carousel-control"
-                            href="#myCarousel"
-                            data-slide="next"
-                          >
-                            <span
-                              class="glyphicon glyphicon-chevron-right"
-                            ></span>
+                          <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
                             <span class="sr-only">Next</span>
                           </a>
                         </div>
@@ -305,16 +232,9 @@
                             </div>
                             <div>
                               <div style="display: block">
-                                <p
-                                  style="padding-left: 10px; padding-top: 10px"
-                                >
-                                  {{ username }}
-                                </p>
+                                <p style="padding-left: 10px; padding-top: 10px">{{ username }}</p>
                               </div>
-                              <div
-                                class="rating-stars text-center"
-                                style="display: block"
-                              >
+                              <div class="rating-stars text-center" style="display: block">
                                 <ul id="stars">
                                   <li
                                     class="star"
@@ -332,9 +252,7 @@
                             </div>
                           </div>
                           <div class="row">
-                            <p class="pHover" v-if="review_bool">
-                              Write a review
-                            </p>
+                            <p class="pHover" v-if="review_bool">Write a review</p>
                           </div>
                           <div class="row" id="review_box" v-if="review_bool">
                             <form>
@@ -346,25 +264,16 @@
                                 rows="10"
                                 v-model="review_content"
                               ></textarea>
-                              <button
-                                class="review_button"
-                                @click="submitReview"
-                              >
-                                Submit
-                              </button>
+                              <button class="review_button" @click="submitReview">Submit</button>
                             </form>
                           </div>
                           <div v-else>
                             <div class="row">
-                              <p style="padding-left: 10px" class="qwe">
-                                {{ review_content }}
-                              </p>
+                              <p style="padding-left: 10px" class="qwe">{{ review_content }}</p>
                               <button
                                 class="review_button qwe"
                                 @click="showHideBlock"
-                              >
-                                Edit Your Review
-                              </button>
+                              >Edit Your Review</button>
                             </div>
                             <div class="row show_hide_box">
                               <form style="display: inline">
@@ -376,55 +285,36 @@
                                   rows="10"
                                   v-model="review_content"
                                 ></textarea>
-                                <button
-                                  class="review_button"
-                                  @click="submitReview"
-                                >
-                                  Submit
-                                </button>
+                                <button class="review_button" @click="submitReview">Submit</button>
                               </form>
 
                               <button
                                 class="review_button"
                                 @click="cancelReview"
                                 style="background-color: #a45a52"
-                              >
-                                Cancel
-                              </button>
+                              >Cancel</button>
                             </div>
                           </div>
                           <div style="margin-top: 20px" class="myDiv2">
                             <div class="myDiv">
                               <p
                                 style="font-size: 40px; text-align: center; margin-top: 30px"
-                              >
-                                {{ averageRating }}
-                              </p>
+                              >{{ averageRating }}</p>
                               <div class="star-ratings">
-                                <div
-                                  class="fill-ratings"
-                                  :style="{ width: `${avgPercent}%` }"
-                                >
+                                <div class="fill-ratings" :style="{ width: `${avgPercent}%` }">
                                   <span>★★★★★</span>
                                 </div>
                                 <div class="empty-ratings">
                                   <span>★★★★★</span>
                                 </div>
                               </div>
-                              <p
-                                style="font-size: 24px; text-align: center; margin-top: 0px"
-                              >
+                              <p style="font-size: 24px; text-align: center; margin-top: 0px">
                                 <i class="fa fa-user"></i>
-                                <span style="margin-left: 10px"
-                                  >{{ totalVotes }} Total</span
-                                >
+                                <span style="margin-left: 10px">{{ totalVotes }} Total</span>
                               </p>
                             </div>
                             <div>
-                              <div
-                                class="container-fluid"
-                                style="display: flex"
-                              >
+                              <div class="container-fluid" style="display: flex">
                                 <p style="margin-right: 10px">5</p>
                                 <div class="progress">
                                   <div
@@ -436,10 +326,7 @@
                                   ></div>
                                 </div>
                               </div>
-                              <div
-                                class="container-fluid"
-                                style="display: flex"
-                              >
+                              <div class="container-fluid" style="display: flex">
                                 <p style="margin-right: 10px">4</p>
                                 <div class="progress">
                                   <div
@@ -451,10 +338,7 @@
                                   ></div>
                                 </div>
                               </div>
-                              <div
-                                class="container-fluid"
-                                style="display: flex"
-                              >
+                              <div class="container-fluid" style="display: flex">
                                 <p style="margin-right: 10px">3</p>
                                 <div class="progress">
                                   <div
@@ -466,10 +350,7 @@
                                   ></div>
                                 </div>
                               </div>
-                              <div
-                                class="container-fluid"
-                                style="display: flex"
-                              >
+                              <div class="container-fluid" style="display: flex">
                                 <p style="margin-right: 10px">2</p>
                                 <div class="progress">
                                   <div
@@ -481,10 +362,7 @@
                                   ></div>
                                 </div>
                               </div>
-                              <div
-                                class="container-fluid"
-                                style="display: flex"
-                              >
+                              <div class="container-fluid" style="display: flex">
                                 <p style="margin-right: 15px">1</p>
                                 <div class="progress">
                                   <div
@@ -505,9 +383,7 @@
                               :key="k"
                               style="padding: 10px"
                             >
-                              <p style="font-weight: 600">
-                                {{ j.user.username }}
-                              </p>
+                              <p style="font-weight: 600">{{ j.user.username }}</p>
                               <div>
                                 <div style="position: absolute">
                                   <i
@@ -530,9 +406,7 @@
 
                                 <p
                                   style="color: grey; position: relative; margin-left: 80px"
-                                >
-                                  {{ j.added_date }}
-                                </p>
+                                >{{ j.added_date }}</p>
                               </div>
                               <p>{{ j.reviews }}</p>
                             </div>
@@ -601,7 +475,11 @@ export default {
       averageRating: "",
       avgPercent: "",
       totalVotes: "",
-      raitngswithreviews: []
+      raitngswithreviews: [],
+      testimonial_bool: false,
+      product_testimonials: [],
+      isVideo: false,
+      video_url: ""
     };
   },
   computed: {
@@ -660,6 +538,7 @@ export default {
         .removeClass("btn-activated");
     });
     document.getElementById("product").click();
+    this.productTestimonials();
   },
   methods: {
     logOutUser: function() {
@@ -671,45 +550,31 @@ export default {
       this.$store.commit("authentication", false);
       this.$router.push("/");
     },
-    data() {
-      return {
-        post: [],
-        product_name: "",
-        city: "",
-        country: "",
-        startup: "",
-        stage: "",
-        users: "",
-        app_link: "",
-        product_video: "",
-        pro_bool: true,
-        date_added: "",
-        product_cat: "",
-        username: "",
-        dp_url: "",
-        review_content: "",
-        review_bool: true,
-        user_review: "",
-        view_content: "",
-        auth_bool: true,
-        new_v: "",
-        review1: [],
-        review2: [],
-        review3: [],
-        review4: [],
-        review5: [],
-        width1: "",
-        width2: "",
-        width3: "",
-        width4: "",
-        width5: "",
-        averageRating: "",
-        avgPercent: "",
-        totalVotes: "",
-        raitngswithreviews: [],
-        testimonial_bool: false,
-        product_testimonials: []
-      };
+    productById: function() {
+      this.$store.dispatch("productById", this.$route.params.id).then(res => {
+        this.post = JSON.parse(res.data.description);
+        this.product_name = res.data.product_name;
+        this.city = res.data.startup_name.city;
+        this.country = res.data.startup_name.country;
+        this.startup = res.data.startup_name.name;
+        this.stage = res.data.stage;
+        this.users = res.data.active_users;
+        this.isVideo = res.data.isVideo;
+        this.video_url = res.data.video_url;
+        this.app_link = res.data.product_app_link;
+        this.product_video = res.data.product_video;
+        this.date_added = res.data.added_date;
+        this.product_cat = res.data.startup_name.category.category;
+        var quill = new Quill("#editor-container", {
+          modules: { toolbar: [] },
+          readOnly: true,
+          theme: "bubble"
+        });
+        quill.setContents(this.post);
+        setTimeout(function() {
+          player = new Plyr("#player");
+        }, 1000);
+      });
     },
 
     getUpdates: function() {
@@ -743,32 +608,6 @@ export default {
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
       }
-      this.getUserRatings();
-      this.getUser();
-      this.getUserAdditionalDetails();
-      $("#stars li")
-        .on("mouseover", function() {
-          var onStar = parseInt($(this).data("value"), 10); // The star currently mouse on
-
-          $(this)
-            .parent()
-            .children("li.star")
-            .each(function(e) {
-              if (e < onStar) {
-                $(this).addClass("hover");
-              } else {
-                $(this).removeClass("hover");
-              }
-            });
-        })
-        .on("mouseout", function() {
-          $(this)
-            .parent()
-            .children("li.star")
-            .each(function(e) {
-              $(this).removeClass("hover");
-            });
-        });
 
       document.getElementById(btnName).style.display = "block";
     },
@@ -778,8 +617,6 @@ export default {
       this.$store.dispatch("getUser", id).then(res => {
         this.username = res.data.username;
       });
-      document.getElementById("product").click();
-      this.productTestimonials();
     },
 
     getUserAdditionalDetails: function() {
@@ -843,82 +680,36 @@ export default {
             });
           }
         })
-          .catch(err => {
-            if (err.response.status === 404) {
-              let i;
+        .catch(err => {
+          if (err.response.status === 404) {
+            let i;
 
-              var onStar = parseInt($("#" + id).val(), 10);
+            var onStar = parseInt($("#" + id).val(), 10);
 
-              var stars = $("#stars li")
-                .parent()
-                .children("li.star");
+            var stars = $("#stars li")
+              .parent()
+              .children("li.star");
 
-              for (i = 0; i < stars.length; i++) {
-                $(stars[i]).removeClass("selected");
-              }
-
-              for (i = 0; i < onStar; i++) {
-                $(stars[i]).addClass("selected");
-              }
-
-              if (onStar > 0) {
-                const payload = new FormData();
-                const id = localStorage.getItem("user_id");
-                payload.append("user", id);
-                payload.append("product", this.$route.params.id);
-                payload.append("ratings", onStar);
-
-                this.$store.dispatch("postRating", payload);
-              }
+            for (i = 0; i < stars.length; i++) {
+              $(stars[i]).removeClass("selected");
             }
-          });
-      },
 
-      submitReview: function() {
-        this.$store
-          .dispatch("getUserRatings", localStorage.getItem("user_id"))
-          .then(res => {
-            const payL = new FormData();
-            payL.append("id", res.data.id);
-            payL.append("ratings", res.data.ratings);
-            payL.append("reviews", this.review_content);
-            payL.append("user", res.data.user);
-            payL.append("product", res.data.product);
-            this.$store.dispatch("updateRatings", payL).then(res => {
-              alert("Your review is submitted");
-            });
-          });
-      },
-
-      showHideBlock: function() {
-        $(".show_hide_box").css("display", "block");
-        $(".qwe").css("display", "none");
-      },
-
-      cancelReview: function() {
-        $(".show_hide_box").css("display", "none");
-        $(".qwe").css("display", "block");
-        this.review_content = this.new_v;
-      },
-
-      allProductRatings: function() {
-        this.review1 = [];
-        this.review2 = [];
-        this.review3 = [];
-        this.review4 = [];
-        this.review5 = [];
-        this.$store.dispatch("allProductRatings").then(res => {
-          this.raitngswithreviews = [];
-          res.data.reverse().map(item => {
-            if (item.reviews != "") {
-              this.raitngswithreviews.push(item);
+            for (i = 0; i < onStar; i++) {
+              $(stars[i]).addClass("selected");
             }
-          });
 
-        })
+            if (onStar > 0) {
+              const payload = new FormData();
+              const id = localStorage.getItem("user_id");
+              payload.append("user", id);
+              payload.append("product", this.$route.params.id);
+              payload.append("ratings", onStar);
 
-      },
-      
+              this.$store.dispatch("postRating", payload);
+            }
+          }
+        });
+    },
 
     submitReview: function() {
       this.$store
@@ -960,26 +751,59 @@ export default {
             this.raitngswithreviews.push(item);
           }
         });
-      })
+
+        this.totalVotes = res.data.length;
+        res.data.map(item => {
+          if (item.ratings === 1) {
+            this.review1.push(item);
+          } else if (item.ratings === 2) {
+            this.review2.push(item);
+          } else if (item.ratings === 3) {
+            this.review3.push(item);
+          } else if (item.ratings === 4) {
+            this.review4.push(item);
+          } else if (item.ratings === 5) {
+            this.review5.push(item);
+          }
+        });
+
+        let p1 = this.review1.length;
+        let p2 = this.review2.length;
+        let p3 = this.review3.length;
+        let p4 = this.review4.length;
+        let p5 = this.review5.length;
+        let ptotal = p1 + p2 + p3 + p4 + p5;
+        this.width1 = (p1 / ptotal) * 100;
+        this.width2 = (p2 / ptotal) * 100;
+        this.width3 = (p3 / ptotal) * 100;
+        this.width4 = (p4 / ptotal) * 100;
+        this.width5 = (p5 / ptotal) * 100;
+
+        let avg =
+          (p1 * 1 + p2 * 2 + p3 * 3 + p4 * 4 + p5 * 5) /
+          (p1 + p2 + p3 + p4 + p5);
+        this.averageRating = avg.toFixed(2);
+        this.avgPercent = (this.averageRating / 5) * 100;
+      });
     },
 
-      productTestimonials: function() {
-        this.$store
-          .dispatch("productTestimonials", this.$route.params.id)
-          .then(res => {
-            this.product_testimonials = res.data;
-            if (res.data.length == 0) {
-              this.testimonial_bool = false;
-            } else {
-              this.testimonial_bool = true;
-            }
-          });
-      }
+    productTestimonials: function() {
+      this.$store
+        .dispatch("productTestimonials", this.$route.params.id)
+        .then(res => {
+          this.product_testimonials = res.data;
+          if (res.data.length == 0) {
+            this.testimonial_bool = false;
+          } else {
+            this.testimonial_bool = true;
+          }
+        });
     }
+  }
 };
 </script>
 
-<style>
+<style scoped>
 .header_slt_block .user_logo_pic {
   background: transparent;
   width: 0px;
@@ -1124,6 +948,10 @@ export default {
 .carousel-control.left {
   background-color: rgba(0, 0, 0, 0);
   background-image: none;
+}
+
+.carousel-control.right {
+  left: auto !important;
 }
 
 .header-st-1 {
@@ -1310,10 +1138,10 @@ export default {
 
 .my-style {
   background-color: white;
-  box-shadow: 4px 4px 10px 2px #e7e7e7;
+  /* box-shadow: 4px 4px 10px 2px #e7e7e7; */
   transition: all 1s ease-in;
   margin: 0px;
-  margin-bottom: 50px;
+  margin: 50px 0;
   padding: 10px;
   border-radius: 20px;
 }
@@ -1541,5 +1369,13 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.submit_listing_box .ql-editor {
+  padding: 0;
+}
+
+.submit_listing_box {
+  padding: 0;
 }
 </style>

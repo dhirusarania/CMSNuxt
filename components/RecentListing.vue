@@ -23,7 +23,7 @@
                 <div class="col-md-6 col-sm-12 nopadding">
                   <div class="recent-listing-box-image">
                     <h1>{{ x.category.category }}</h1>
-                    <img :src="x.thumbnail" alt="img1" class="thumb-img" />
+                    <img :src="x.thumbnail" @error="setFallbackImageUrl" alt="img1" class="thumb-img" />
                   </div>
                   <div class="hover-overlay">
                     <div class="hover-overlay-inner">
@@ -69,13 +69,6 @@
                         <i class="fa fa-map-marker"></i>
                         {{ x.country }}
                       </h2>
-                      <span>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-o"></i>
-                      </span>
                     </div>
                   </div>
                 </div>

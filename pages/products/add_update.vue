@@ -75,7 +75,7 @@
                         <label>Update</label>
                         <div id="editor-container"></div>
                       </div>
-                      <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                      <!-- <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Update Video</label>
                         <input
                           class="form-control"
@@ -84,7 +84,7 @@
                           ref="file"
                           v-on:change="handleFileUpload()"
                         />
-                      </div>
+                      </div> -->
                     </div>
                   </form>
                 </div>
@@ -153,6 +153,8 @@
       },
 
       save() {
+        // console.log(quill.root.innerHTML)
+        // quill.container.firstChild.innerHTML = "<p>hggh</p><p>gh</p><p>gh</p><p>gh</p><p>gh</p><p>gh</p><p><br></p>"
         var payload = new FormData();
         payload.append("added_by", localStorage.getItem("user_id"));
         const date_added = new Date();
@@ -162,7 +164,7 @@
         const added_dated = year + "-" + month + "-" + day;
         payload.append("added_date", added_dated);
         payload.append("product", this.$route.params.id);
-        payload.append("latest_updates", JSON.stringify(quill.getContents()));
+        payload.append("latest_updates", quill.root.innerHTML);
         // payload.append("latest_updates", JSON.stringify(outputData.blocks));
         payload.append("update_video", this.file);
         this.$store.dispatch("postUpdate", payload).then(res => {});

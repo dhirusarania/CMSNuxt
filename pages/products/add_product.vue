@@ -17,17 +17,13 @@
           font-size: 26px;
           font-weight: 600;
           text-shadow: 2px 2px #e7e7e7;"
-      >
-        Submitting product, please wait
-      </h4>
+      >Submitting product, please wait</h4>
       <h4
         style="text-align: center;font-family: GothamRounded;
           font-size: 26px;
           font-weight: 600;
           text-shadow: 2px 2px #e7e7e7;"
-      >
-        This may take a little while
-      </h4>
+      >This may take a little while</h4>
     </div>
   </div>
   <div v-else>
@@ -107,55 +103,70 @@
                         <input
                           class="form-control"
                           type="text"
+                          :disabled="true"
                           v-model="startupname"
                         />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Stage</label>
-                        <input
-                          class="form-control"
-                          type="number"
-                          v-model="stage"
-                        />
+                        <input class="form-control" type="number" v-model="stage" />
                       </div>
-                      <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                      <div class="form-group col-xs-12">
                         <label>Product Name</label>
-                        <input
-                          class="form-control"
-                          type="text"
-                          v-model="product_name"
-                        />
+                        <input class="form-control" type="text" v-model="product_name" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Application Link</label>
-                        <input
-                          class="form-control"
-                          type="text"
-                          v-model="app_link"
-                        />
+                        <input class="form-control" type="text" v-model="app_link" />
                       </div>
                       <div class="form-group col-md-6 col-sm-12 col-xs-12">
                         <label>Number of active users</label>
-                        <input
-                          class="form-control"
-                          type="number"
-                          v-model="active_users"
-                        />
+                        <input class="form-control" type="number" v-model="active_users" />
                       </div>
                       <div class="form-group col-xs-12">
                         <label>Description</label>
-                        <div id="editor-container"></div>
+                        <div id="editor-container" style="min-height: 200px"></div>
                       </div>
 
-                      <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                      <div class="myradio">
+                        <input
+                          type="radio"
+                          name="myRadio"
+                          id="one"
+                          value="0"
+                          v-model="background"
+                          class="myradio__input"
+                          checked
+                        />
+                        <label for="one" class="myradio__label">Upload Video</label>
+                      </div>
+                      <div class="myradio">
+                        <input
+                          type="radio"
+                          name="myRadio"
+                          id="two"
+                          value="1"
+                          v-model="background"
+                          class="myradio__input"
+                        />
+                        <label for="two" class="myradio__label">Add Youtube URL</label>
+                      </div>
+
+                      <div class="form-group col-xs-12" v-if="background == 0">
                         <label>Product Video</label>
                         <input
                           class="form-control"
                           type="file"
                           id="file"
+                          accept="video/*"
                           ref="file"
                           v-on:change="handleFileUpload()"
                         />
+                      </div>
+
+                      <div class="form-group col-xs-12" v-if="background == 1">
+                        <label>Youtube Video URL</label>
+                        <input class="form-control" type="text" v-model="video_url" />
                       </div>
                     </div>
                   </form>
@@ -163,9 +174,7 @@
 
                 <div class="from-list-lt">
                   <div class="form-group">
-                    <button class="btn" type="submit" @click="save">
-                      Submit Product
-                    </button>
+                    <button class="btn" type="submit" @click="save">Submit Product</button>
                   </div>
                 </div>
               </div>
@@ -178,69 +187,82 @@
 </template>
 
 <script>
-  import Cookies from "js-cookie";
-  let EditorJS, Header, List, Image, quill;
-  export default {
-    middleware: "token-auth",
-    data() {
-      return {
-        startupname: "",
-        description: "",
-        stage: "",
-        product_name: "",
-        app_link: "",
-        active_users: "",
-        desc: "",
-        file: "",
-        delta: "",
-        loading_bool: false
-      };
-    },
-    mounted() {
-      quill = new Quill("#editor-container", {
-        modules: {
-          toolbar: [
-            [{ header: [1, 2, 3, 4, false] }],
-            ["bold", "italic", "underline"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["image"],
+import Cookies from "js-cookie";
+let EditorJS, Header, List, Image, quill;
+export default {
+  middleware: "token-auth",
+  data() {
+    return {
+      startupname: "",
+      description: "",
+      stage: "",
+      product_name: "",
+      app_link: "",
+      active_users: "",
+      desc: "",
+      file: "",
+      delta: "",
+      loading_bool: false,
+      video_url: "",
+      background: 0
+    };
+  },
+  mounted() {
+    quill = new Quill("#editor-container", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, 4, false] }],
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["image"],
 
-            [{ color: [] }, { background: [] }],
-            [{ font: [] }],
-            [{ align: [] }]
-          ]
-        },
-        placeholder: "Write Product Description here...",
-        theme: "snow"
-      });
-
-      quill.on("text-change", function() {
-        this.delta = quill.getContents();
-      });
-
-      this.startupname = this.$route.params.startup;
-
-      $("#user_profile")
-        .addClass("active")
-        .siblings()
-        .removeClass("active");
-    },
-    methods: {
-      logOutUser: function() {
-        var payload = new FormData();
-        payload.append("login_status", "false");
-        this.$store.dispatch("logOutUser", payload).then(res => {});
-        localStorage.clear();
-        Cookies.remove("x-access-token");
-        this.$store.commit("authentication", false);
-        this.$router.push("/");
+          [{ color: [] }, { background: [] }],
+          [{ font: [] }],
+          [{ align: [] }]
+        ]
       },
+      placeholder: "Write Product Description here...",
+      theme: "snow"
+    });
 
-      handleFileUpload: function() {
-        this.file = this.$refs.file.files[0];
-      },
+    quill.on("text-change", function() {
+      this.delta = quill.getContents();
+    });
 
-      save() {
+    this.startupname = this.$route.params.startup;
+
+    $("#user_profile")
+      .addClass("active")
+      .siblings()
+      .removeClass("active");
+  },
+  methods: {
+    logOutUser: function() {
+      var payload = new FormData();
+      payload.append("login_status", "false");
+      this.$store.dispatch("logOutUser", payload).then(res => {});
+      localStorage.clear();
+      Cookies.remove("x-access-token");
+      this.$store.commit("authentication", false);
+      this.$router.push("/");
+    },
+
+    handleFileUpload: function() {
+      this.file = this.$refs.file.files[0];
+    },
+
+    matchYoutubeUrl1(url) {
+      var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+      if (url.match(p)) {
+        return true;
+      }
+      return false;
+    },
+
+    save() {
+      console.log();
+
+      if (this.background == 0 || this.matchYoutubeUrl1(this.video_url)) {
         var payload = new FormData();
         payload.append("added_by", localStorage.getItem("user_id"));
         const date_added = new Date();
@@ -255,15 +277,24 @@
         payload.append("product_app_link", this.app_link);
         payload.append("active_users", this.active_users);
         payload.append("startup_name", this.$route.params.id);
-        payload.append("product_video", this.file);
+        payload.append("isVideo", this.background);
+        if (this.file && this.background == 0) {
+          payload.append("product_video", this.file);
+        } else if(this.background == 1) {
+          payload.append("video_url", this.video_url);
+        }
         this.loading_bool = true;
+        console.log(payload)
         this.$store.dispatch("postProduct", payload).then(res => {
           this.$router.push("/startup/listing");
         });
       }
     }
-  };
+  }
+};
 </script>
 
 <style>
+/* RADIO BUTTON STLYING BEGINS */
+
 </style>

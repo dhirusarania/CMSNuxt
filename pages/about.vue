@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="col-md-4 col-sm-12 col-xs-12 user-lt-above">
-            <img :src="image_url" alt="about-user" />
+            <img :src="image_url" alt="about-user" class="about-img" />
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
                 <div class="vfx-item-black-top-arrow">
                   <i class="fa fa-file"></i>
                 </div>
-                <div id="count-1" class="vfx-coutter-item count_number vfx-item-count-up">4960</div>
+                <div id="count-1" class="vfx-coutter-item count_number vfx-item-count-up">{{listing}}</div>
                 <div class="counter_text">Listings</div>
               </div>
             </div>
@@ -87,7 +87,6 @@
       </div>
     </div>
 
-    
     <div v-for="(item, i) in activeCategories" :key="i">
       <featured-list v-if="item.name === 'Featured Listings'" :featuredList="featuredList" />
       <categories-list
@@ -97,11 +96,7 @@
         :getListing="getListing"
       />
       <recent-listing v-if="item.name === 'Recent Listings'" :startupList="startupList" />
-      <register-startup
-        v-if="item.title"
-        :static_data = item
-        :register_startup="register_startup"
-      />
+      <register-startup v-if="item.title" :static_data="item" :register_startup="register_startup" />
     </div>
     <Auth />
   </div>
@@ -159,7 +154,10 @@ export default {
       categoryList: [],
       searchValue: "",
       activeCategories: [],
-      static_data: []
+      static_data: [],
+      listing: 0,
+      users: 0,
+      category: 0
     };
   },
   mounted() {
@@ -173,16 +171,17 @@ export default {
       .siblings()
       .removeClass("active");
 
-         this.$store.dispatch("getActiveComponentsGeneral", 4).then(res=>{
-        console.log(res.data)
-        this.activeCategories =  JSON.parse(res.data.value);
-    })
+    this.$store.dispatch("getActiveComponentsGeneral", 4).then(res => {
+      console.log(res.data);
+      this.activeCategories = JSON.parse(res.data.value);
+    });
   },
   methods: {
     activatedAboutCMS: function() {
       this.$store.dispatch("activatedAboutCMS").then(res => {
         res.data.map(item => {
           this.post = JSON.parse(item.about_info);
+
           this.image_url = item.about_image;
         });
       });
@@ -404,11 +403,45 @@ export default {
         new_payload.append("backend", "google-oauth2");
         new_payload.append(
           "client_id",
-          "oyBLYzEeUfq1xwNYUscD0oF9rH8Gdm0FgYr8unCH"
+          "VWCV9m8ap325uaA3G7Uize8V8XVr1jlMFNXQdU6z"
         );
         new_payload.append(
           "client_secret",
-          "1zxuIPtXtsHlzaAEfUNUo7Oqt1OOykvGaX8CLVRqtuCN1KYvRDgdPtEH0p1adprhzX6hH0K9Xd2duN8rdx7184JzFM91tpWT0SqPTu6GEt2hi7M7Ms1QqA9DkF9MlrSk"
+          "PiQxB3XeptIPSu4twnXjFUESfFWT2kWXgBgbqWtAxyt16PBcUbxjqKGYs3y1dEnuvKSNXPUP1j78ZoiTBHe4fCdO24orjZJnAVWW3YMCt3gn911bjqMm3ZkiLi8ilM95"
+        );
+        payload.append("oauth", true);
+        this.$store.dispatch("getBearerToken", new_payload).then(res => {
+          localStorage.setItem("bearer", "Bearer " + res.data.access_token);
+          this.$store.commit("bearer", res.data.access_token);
+          this.$store.commit("authentication", true);
+          this.$router.push("/startup/listing");
+        });
+      });
+    },
+
+    facebookLogin: function() {
+      this.$store.commit("bearer");
+      var payload = new FormData();
+      var provider = "facebook";
+      payload.append("provider", "facebook");
+      this.token = window.location.href
+        .split("#")[1]
+        .split("=")[2]
+        .split("&")[0];
+      payload.append("access_token", "EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD");
+      this.$store.dispatch("googleLogIn", payload).then(res => {
+        localStorage.setItem("user_id", res.data.id);
+        var new_payload = new FormData();
+        new_payload.append("grant_type", "convert_token");
+        new_payload.append("token", "EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD");
+        new_payload.append("backend", "facebook");
+        new_payload.append(
+          "client_id",
+          "VWCV9m8ap325uaA3G7Uize8V8XVr1jlMFNXQdU6z"
+        );
+        new_payload.append(
+          "client_secret",
+          "PiQxB3XeptIPSu4twnXjFUESfFWT2kWXgBgbqWtAxyt16PBcUbxjqKGYs3y1dEnuvKSNXPUP1j78ZoiTBHe4fCdO24orjZJnAVWW3YMCt3gn911bjqMm3ZkiLi8ilM95"
         );
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {
@@ -443,4 +476,8 @@ export default {
 </script>
 
 <style>
+.about-img {
+  max-height: 250px;
+  margin-bottom: 30px;
+}
 </style>

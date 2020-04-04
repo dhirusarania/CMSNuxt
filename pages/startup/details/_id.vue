@@ -99,15 +99,15 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 hide-lg-product">
+          <div class="col-12 hide-lg-product" style="padding: 0 15px">
             <div class="tab">
               <button
                 class="tablinks btn-activated"
                 id="product"
                 @click="openbtn('description')"
               >Products</button>
-              <!-- <button class="tablinks" id="faq" @click="openbtn('reviews')">FAQ</button>
-              <button class="tablinks" id="com" @click="openbtn('community')">Community</button> -->
+              <button class="tablinks" id="pitch" @click="openbtn('pitch-section')">Pitch</button>
+              <!-- <button class="tablinks" id="com" @click="openbtn('community')">Community</button> -->
             </div>
 
             <div id="description" class="tabcontent">
@@ -116,20 +116,23 @@
                   class="col-12"
                   v-for="(a, b) in product_list"
                   :key="b"
-                  style="padding: 10px; padding-top: 30px"
+                  style="padding: 30px 15px 10px;"
                 >
                   <p class="st-sub-text-11">
                     {{ b + 1 }}.
-                    <span
+                    <nuxt-link
                       style="margin-left: 10px"
-                      class="prod_desc-11"
-                    >{{ a.product_name }}</span>
+                      :to="{
+                      name: 'products-id',
+                      params: { id: a.id }
+                    }"
+                    >{{ a.product_name }}</nuxt-link>
                     <video
+                      preload="metadata"
                       id="player"
-                      poster="../../../images/pro_img.jpg"
                       playsinline
                       controls
-                      style="margin-top: 20px;"
+                      style="max-height:400px"
                       class="video-width"
                     >
                       <source :src="a.product_video" type="video/mp4" />
@@ -162,8 +165,20 @@
               <p class="faq-11">Community</p>
             </div>
 
-            <div id="pitch" class="tabcontent">
-              <p class="faq-11">Pitch</p>
+            <div id="pitch-section" class="tabcontent">
+              <div class="row">
+                <h3>Pitch / Campaign</h3>
+                <div>
+                  <a :href="pitch_file" target="_blank" download>Download Campaign File</a>
+                </div>
+              </div>
+              <div class="row" style="padding-top: 20px">
+                <div
+                  id="editor-container"
+                  class="no-padding-editor"
+                  style="background-color: white"
+                ></div>
+              </div>
             </div>
           </div>
         </div>
@@ -195,7 +210,9 @@ export default {
       product_bool: false,
       thumbnail: "",
       state: "",
-      loading_bool: true
+      loading_bool: true,
+      pitch_file: "",
+      pitch_info: ""
     };
   },
   mounted() {
@@ -228,6 +245,15 @@ export default {
         this.added = res.data.added_date;
         this.thumbnail = res.data.thumbnail;
         this.state = res.data.state;
+        this.pitch_file = res.data.pitch_file;
+        this.pitch_info = JSON.parse(res.data.pitch);
+
+        var quill = new Quill("#editor-container", {
+          modules: { toolbar: [] },
+          readOnly: true,
+          theme: "bubble"
+        });
+        quill.setContents(this.pitch_info);
       });
     },
 
@@ -255,7 +281,7 @@ export default {
     openbtn: function(btnName) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");
-      console.log(tabcontent)
+      console.log(tabcontent);
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
       }
