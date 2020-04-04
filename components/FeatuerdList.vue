@@ -62,20 +62,20 @@
                         <i class="fa fa-calendar"></i>
                         {{ x.date_of_launch }}
                       </a>
-                      <p style="min-height: 88px">{{ x.description.slice(0, 100) }}.....</p>
+                      <p style="min-height: 88px">{{ x.description.slice(0, 100) }}</p>
                     </div>
                     <div class="recent-feature-item-rating">
                       <h2>
                         <i class="fa fa-map-marker"></i>
                         {{ x.country }}
                       </h2>
-                      <span>
+                      <!-- <span>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star-o"></i>
-                      </span>
+                      </span> -->
                     </div>
                   </div>
                 </div>

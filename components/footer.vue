@@ -94,9 +94,9 @@
             <hr />
             <ul class="use-slt-link">
               <li>
-                <a href="#">
+               <nuxt-link to="/legal/privacy">
                   <i class="fa fa-hand-o-right"></i>&nbsp;&nbsp;Privacy & Policy
-                </a>
+               </nuxt-link>
               </li>
               <li>
                 <a href="#">

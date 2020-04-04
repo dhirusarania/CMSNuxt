@@ -346,11 +346,11 @@ export default {
         new_payload.append("backend", "facebook");
         new_payload.append(
           "client_id",
-          "VWCV9m8ap325uaA3G7Uize8V8XVr1jlMFNXQdU6z"
+          "rgYaLfrjtEGsU8zzjXYsEf9KR51oGjCHR8PVGrLW"
         );
         new_payload.append(
           "client_secret",
-          "PiQxB3XeptIPSu4twnXjFUESfFWT2kWXgBgbqWtAxyt16PBcUbxjqKGYs3y1dEnuvKSNXPUP1j78ZoiTBHe4fCdO24orjZJnAVWW3YMCt3gn911bjqMm3ZkiLi8ilM95"
+          "rBpxq1t2zZG1DraW8rczd4rmFs7eiDfI1cyoWhxtYrldpwpEkbE0T0AubkAY4sJDOp0NdysFF8doY8vhiGmyl6DM6oDjCbIpAgGS48ahdeHyhLkW9Vkc06Jzl42J13zL"
         );
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {
