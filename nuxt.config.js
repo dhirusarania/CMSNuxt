@@ -168,12 +168,12 @@ export default {
                 client_id: "246184809764231",
                 userinfo_endpoint: false,
                 scope: ["public_profile", "email"],
-                redirect_uri: "http://localhost:3000"
+                redirect_uri: "http://ft500.in"
             },
             google: {
                 client_id: "879086255795-ve28ul2e48a6jass60vs7ssab55h91q5.apps.googleusercontent.com",
                 user: false,
-                redirect_uri: "http://localhost:3000"
+                redirect_uri: "http://ft500.in"
             }
         },
         redirect: {
@@ -185,7 +185,6 @@ export default {
     env: {
         client_id: 'MvpaT8AnNmGGOwKIAy8C9HmzmCMSAt5YtIbDcMiJ',
         client_secret: 'vl2yS4NHcDIFAUhCBs8zw6JqX4sCplHcD0lgmpkUXK790AwA8sT49DPi3zZQ1ONp3b1wg6vxPT06SQY0PpL9vIe7nJHMhroSfMlr5GYxmIKpr4hA8XoVQcRXq3LR81je',
-
         facebook_token: 'EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD'
     },
 
