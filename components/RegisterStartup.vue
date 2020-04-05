@@ -11,7 +11,7 @@
               <span class="banner-text-1">{{static_data['title']}}</span>
               <!-- <span class="banner-text-2" style="display: block">or think you can't--you're right."</span> -->
               <br />
-              <span v-for="p in content" :key="p.id" class="banner-text-3" v-html="p.data.text"></span>
+              <span v-html="content"></span>
               <br />
               <button class="st-bt-11" @click="register_startup">
                 {{static_data['button']}}
@@ -37,7 +37,7 @@
               <span class="banner-text-1">{{static_data['title']}}</span>
               <!-- <span class="banner-text-2" style="display: block">or think you can't--you're right."</span> -->
               <br />
-              <span v-for="p in content" :key="p.id" class="banner-text-3" v-html="p.data.text"></span>
+              <span v-html="content"></span>
               <br />
               <button class="st-bt-11" @click="register_startup">
                 {{static_data['button']}}
@@ -63,7 +63,7 @@
               <span class="banner-text-1">{{static_data['title']}}</span>
               <!-- <span class="banner-text-2" style="display: block">or think you can't--you're right."</span> -->
               <br />
-              <span v-for="p in content" :key="p.id" class="banner-text-3" v-html="p.data.text"></span>
+              <span v-html="content"></span>
               <br />
               <button class="st-bt-11" @click="register_startup">
                 {{static_data['button']}}
@@ -91,8 +91,8 @@ export default {
   },
   beforeMount(){
       // this.content = JSON.parse(this.static_data.content)[0]['data']['text']
-      console.log(JSON.parse(this.static_data.content))
-      this.content = JSON.parse(this.static_data.content)
+
+      this.content = this.static_data.content
   }
 };
 </script>
