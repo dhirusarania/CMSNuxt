@@ -183,8 +183,10 @@ export default {
     },
 
     env: {
-        client_id: 'rgYaLfrjtEGsU8zzjXYsEf9KR51oGjCHR8PVGrLW',
-        client_secret: 'rBpxq1t2zZG1DraW8rczd4rmFs7eiDfI1cyoWhxtYrldpwpEkbE0T0AubkAY4sJDOp0NdysFF8doY8vhiGmyl6DM6oDjCbIpAgGS48ahdeHyhLkW9Vkc06Jzl42J13zL',
+        client_id: 'MvpaT8AnNmGGOwKIAy8C9HmzmCMSAt5YtIbDcMiJ',
+        client_secret: 'vl2yS4NHcDIFAUhCBs8zw6JqX4sCplHcD0lgmpkUXK790AwA8sT49DPi3zZQ1ONp3b1wg6vxPT06SQY0PpL9vIe7nJHMhroSfMlr5GYxmIKpr4hA8XoVQcRXq3LR81je',
+
+        facebook_token: 'EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD'
     },
 
     axios: {},

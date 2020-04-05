@@ -534,11 +534,11 @@ export default {
         new_payload.append("backend", "google-oauth2");
         new_payload.append(
           "client_id",
-          "rgYaLfrjtEGsU8zzjXYsEf9KR51oGjCHR8PVGrLW"
+          process.env.client_id
         );
         new_payload.append(
           "client_secret",
-          "rBpxq1t2zZG1DraW8rczd4rmFs7eiDfI1cyoWhxtYrldpwpEkbE0T0AubkAY4sJDOp0NdysFF8doY8vhiGmyl6DM6oDjCbIpAgGS48ahdeHyhLkW9Vkc06Jzl42J13zL"
+          process.env.client_secret
         );
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {
@@ -560,20 +560,20 @@ export default {
         .split("#")[1]
         .split("=")[2]
         .split("&")[0];
-      payload.append("access_token", "EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD");
+      payload.append("access_token", process.env.facebook_token);
       this.$store.dispatch("googleLogIn", payload).then(res => {
         localStorage.setItem("user_id", res.data.id);
         var new_payload = new FormData();
         new_payload.append("grant_type", "convert_token");
-        new_payload.append("token", "EAADf514ilYcBAKiIbICymXYoJPPdGu5FCp4nJC3AtmQSwM0ewbsDBZAc5WbBxEUqGlJwTVzuH3eKTARDSFZCk7IVhGGmqgxCXKh9wobjgGjlyEUb4lC0fhPtNmfF61Be0wMIq86c5rctZCBvWmzh9n2C7xxaCOZBiZBQSLz2rEMAbNHjMu66aJkUZCMe1b99cZD");
+        new_payload.append("token", process.env.facebook_token);
         new_payload.append("backend", "facebook");
         new_payload.append(
           "client_id",
-          "rgYaLfrjtEGsU8zzjXYsEf9KR51oGjCHR8PVGrLW"
+          process.env.client_id
         );
         new_payload.append(
           "client_secret",
-          "rBpxq1t2zZG1DraW8rczd4rmFs7eiDfI1cyoWhxtYrldpwpEkbE0T0AubkAY4sJDOp0NdysFF8doY8vhiGmyl6DM6oDjCbIpAgGS48ahdeHyhLkW9Vkc06Jzl42J13zL"
+          process.env.client_secret
         );
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {
