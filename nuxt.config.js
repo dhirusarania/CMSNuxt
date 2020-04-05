@@ -168,12 +168,12 @@ export default {
                 client_id: "246184809764231",
                 userinfo_endpoint: false,
                 scope: ["public_profile", "email"],
-                redirect_uri: "http://ft500.in"
+                redirect_uri: "http://localhost:3000"
             },
             google: {
                 client_id: "879086255795-ve28ul2e48a6jass60vs7ssab55h91q5.apps.googleusercontent.com",
                 user: false,
-                redirect_uri: "http://ft500.in"
+                redirect_uri: "http://localhost:3000"
             }
         },
         redirect: {

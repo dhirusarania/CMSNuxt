@@ -176,8 +176,11 @@ export default {
 
   mounted() {
     if (window.location.href.includes("access_token")) {
-      this.googleLogIn();
-       this.facebookLogin();
+      if (localStorage.getItem("auth.strategy") == "google") {
+        this.googleLogIn();
+      } else {
+        this.facebookLogin();
+      }
     }
   },
 
@@ -331,27 +334,15 @@ export default {
         .split("#")[1]
         .split("=")[2]
         .split("&")[0];
-      payload.append(
-        "access_token",
-        process.env.facebook_token
-      );
+      payload.append("access_token", process.env.facebook_token);
       this.$store.dispatch("googleLogIn", payload).then(res => {
         localStorage.setItem("user_id", res.data.id);
         var new_payload = new FormData();
         new_payload.append("grant_type", "convert_token");
-        new_payload.append(
-          "token",
-          process.env.facebook_token
-        );
+        new_payload.append("token", process.env.facebook_token);
         new_payload.append("backend", "facebook");
-        new_payload.append(
-          "client_id",
-          process.env.client_id
-        );
-        new_payload.append(
-          "client_secret",
-          process.env.client_secret
-        );
+        new_payload.append("client_id", process.env.client_id);
+        new_payload.append("client_secret", process.env.client_secret);
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {
           localStorage.setItem("bearer", "Bearer " + res.data.access_token);

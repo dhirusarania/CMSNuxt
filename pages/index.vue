@@ -312,8 +312,11 @@ export default {
     this.getUserCount();
     this.getFeaturedStartups();
     if (window.location.href.includes("access_token")) {
-      this.googleLogIn();
-      this.facebookLogin();
+      if (localStorage.getItem("auth.strategy") == "google") {
+        this.googleLogIn();
+      } else {
+        this.facebookLogin();
+      }
     }
 
     $("#home")
@@ -532,14 +535,8 @@ export default {
         new_payload.append("grant_type", "convert_token");
         new_payload.append("token", this.token);
         new_payload.append("backend", "google-oauth2");
-        new_payload.append(
-          "client_id",
-          process.env.client_id
-        );
-        new_payload.append(
-          "client_secret",
-          process.env.client_secret
-        );
+        new_payload.append("client_id", process.env.client_id);
+        new_payload.append("client_secret", process.env.client_secret);
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {
           localStorage.setItem("bearer", "Bearer " + res.data.access_token);
@@ -549,7 +546,6 @@ export default {
         });
       });
     },
-
 
     facebookLogin: function() {
       this.$store.commit("bearer");
@@ -567,14 +563,8 @@ export default {
         new_payload.append("grant_type", "convert_token");
         new_payload.append("token", process.env.facebook_token);
         new_payload.append("backend", "facebook");
-        new_payload.append(
-          "client_id",
-          process.env.client_id
-        );
-        new_payload.append(
-          "client_secret",
-          process.env.client_secret
-        );
+        new_payload.append("client_id", process.env.client_id);
+        new_payload.append("client_secret", process.env.client_secret);
         payload.append("oauth", true);
         this.$store.dispatch("getBearerToken", new_payload).then(res => {
           localStorage.setItem("bearer", "Bearer " + res.data.access_token);
@@ -600,10 +590,15 @@ export default {
 
     SearchFilter: function() {
       if (this.searchValue != "") {
-        if(this.search_category == 0){
+        if (this.search_category == 0) {
           this.$router.push("/startup/all_startups?" + this.searchValue);
-        }else{
-          this.$router.push("/startup/all_startups?" + this.searchValue + "&category=" + this.search_category);
+        } else {
+          this.$router.push(
+            "/startup/all_startups?" +
+              this.searchValue +
+              "&category=" +
+              this.search_category
+          );
         }
       }
     }
@@ -616,20 +611,17 @@ export default {
   border-radius: 0;
 }
 
-
-@media (max-width: 480px) and (min-width: 200px){
-  #search-input{
+@media (max-width: 480px) and (min-width: 200px) {
+  #search-input {
     flex-direction: column;
-    padding:  0 10px
+    padding: 0 10px;
   }
 
-  #location-search-list{
-    width: 100%!important;
-    margin-left: 0!important
+  #location-search-list {
+    width: 100% !important;
+    margin-left: 0 !important;
   }
 }
-
-
 
 #search-input input.form-control {
   border-radius: 0 !important;
