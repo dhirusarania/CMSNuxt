@@ -18,7 +18,7 @@
                 <i
                   class="fa fa-angle-right"
                   aria-hidden="true"
-                  style="background-color: #ffbe2e; border-radius: 50%; padding: 6px 13px"
+                  style="background-color:  var(--main-bg-color); border-radius: 50%; padding: 6px 13px"
                 ></i>
               </button>
             </div>
@@ -44,7 +44,7 @@
                 <i
                   class="fa fa-angle-right"
                   aria-hidden="true"
-                  style="background-color: #ffbe2e; border-radius: 50%; padding: 6px 13px"
+                  style="background-color:  var(--main-bg-color); border-radius: 50%; padding: 6px 13px"
                 ></i>
               </button>
             </div>
@@ -70,7 +70,7 @@
                 <i
                   class="fa fa-angle-right"
                   aria-hidden="true"
-                  style="background-color: #ffbe2e; border-radius: 50%; padding: 6px 13px"
+                  style="background-color: var(--main-bg-color); border-radius: 50%; padding: 6px 13px"
                 ></i>
               </button>
             </div>
