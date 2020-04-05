@@ -105,5 +105,7 @@ export const state = () => ({
 
     productTestimonials: url + "/product_testimonials/",
 
-    addTestimonial: url + "/testimonial_post"
+    addTestimonial: url + "/testimonial_post",
+
+    get_count: url + "/get_count"
 });

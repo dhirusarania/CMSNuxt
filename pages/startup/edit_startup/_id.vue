@@ -513,7 +513,7 @@ export default {
         localStorage.setItem("startupId", res.data.id);
         this.getCountries();
         console.log(res.data);
-        quill.setContents(JSON.parse(res.data.pitch));
+        quill.container.firstChild.innerHTML = res.data.pitch
       });
     },
 
@@ -550,7 +550,7 @@ export default {
         payload.append("year_founded", this.year);
       }
 
-      payload.append("pitch", JSON.stringify(quill.getContents()));
+      payload.append("pitch", quill.root.innerHTML);
 
       const country = $("#country-select :selected").text();
       payload.append("country", country);

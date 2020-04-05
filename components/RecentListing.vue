@@ -18,7 +18,7 @@
             <div class="blind line_2"></div>
           </div>
           <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12" v-for="(x, y) in startupList" :key="y">
+            <div class="col-md-6 col-sm-6 col-xs-12" v-for="(x, y) in startupList.slice(0, 8)" :key="y">
               <div class="recent-listing-box-container-item">
                 <div class="col-md-6 col-sm-12 nopadding">
                   <div class="recent-listing-box-image">

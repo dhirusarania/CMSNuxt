@@ -204,7 +204,8 @@ export default {
       delta: "",
       loading_bool: false,
       video_url: "",
-      background: 0
+      background: 0,
+      max_file: 50
     };
   },
   mounted() {
@@ -248,7 +249,12 @@ export default {
     },
 
     handleFileUpload: function() {
-      this.file = this.$refs.file.files[0];
+      if (this.$refs.file.files[0].size > this.max_file) {
+        alert("File size must under " + this.max_file + " MB!");
+        $("#file").val("")
+      } else {
+        this.file = this.$refs.file.files[0];
+      }
     },
 
     matchYoutubeUrl1(url) {
@@ -280,13 +286,13 @@ export default {
         payload.append("isVideo", this.background);
         if (this.file && this.background == 0) {
           payload.append("product_video", this.file);
-        } else if(this.background == 1) {
+        } else if (this.background == 1) {
           payload.append("video_url", this.video_url);
         }
         this.loading_bool = true;
-        console.log(payload)
+        console.log(payload);
         this.$store.dispatch("postProduct", payload).then(res => {
-          this.$router.push("/startup/listing");
+          this.$router.back();
         });
       }
     }
@@ -296,5 +302,4 @@ export default {
 
 <style>
 /* RADIO BUTTON STLYING BEGINS */
-
 </style>

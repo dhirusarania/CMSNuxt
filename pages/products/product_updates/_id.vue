@@ -131,7 +131,7 @@
                       No updates available for this product
                     </h3>
                     <!-- <nuxt-link to="submit_listing">
-                      <h3 style="text-align: left; color: #ffce10">Submit your startup now</h3>
+                      <h3 style="text-align: left; color: var(--main-bg-color)">Submit your startup now</h3>
                     </nuxt-link>-->
                   </div>
                 </div>
@@ -156,7 +156,7 @@
     },
 
     mounted() {
-      this.product_name = this.$route.params.product;
+      this.product_name = "this.$route.params.product";
       this.getUpdates();
     },
 

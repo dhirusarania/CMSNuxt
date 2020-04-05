@@ -947,5 +947,20 @@ export const actions = {
                     console.log(err);
                 });
         });
+    },
+    get_count({ commit, state }) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.get_count,
+                    contentType: "application/json"
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
     }
 };

@@ -174,9 +174,7 @@
               </div>
               <div class="row" style="padding-top: 20px">
                 <div
-                  id="editor-container"
-                  class="no-padding-editor"
-                  style="background-color: white"
+                  v-html="pitch_info"
                 ></div>
               </div>
             </div>
@@ -246,14 +244,14 @@ export default {
         this.thumbnail = res.data.thumbnail;
         this.state = res.data.state;
         this.pitch_file = res.data.pitch_file;
-        this.pitch_info = JSON.parse(res.data.pitch);
+        this.pitch_info = res.data.pitch;
 
-        var quill = new Quill("#editor-container", {
-          modules: { toolbar: [] },
-          readOnly: true,
-          theme: "bubble"
-        });
-        quill.setContents(this.pitch_info);
+        // var quill = new Quill("#editor-container", {
+        //   modules: { toolbar: [] },
+        //   readOnly: true,
+        //   theme: "bubble"
+        // });
+        // quill.setContents(this.pitch_info);
       });
     },
 
@@ -307,7 +305,7 @@ export default {
 }
 
 .product_link:hover {
-  color: #ffce10;
+  color: var(--main-bg-color);
 }
 
 #vfx-product-inner-item {

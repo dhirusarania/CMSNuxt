@@ -144,8 +144,8 @@
                           <nuxt-link
                             class="tg-btn-list"
                             :to="{
-                              name: 'products-product_updates',
-                              params: { id: x.id, product: x.product_name }
+                              name: 'products-product_updates-id',
+                              params: { id: x.id }
                             }"
                           >
                             <i class="fa fa-wrench"></i>
@@ -155,8 +155,8 @@
                           <nuxt-link
                             class="tg-btn-list"
                             :to="{
-                              name: 'products-add_update',
-                              params: { id: x.id, product: x.product_name }
+                              name: 'products-add_update-id',
+                              params: { id: x.id }
                             }"
                           >
                             <i class="fa fa-plus"></i>
@@ -190,7 +190,7 @@
                       No products added for this startup
                     </h3>
                     <!-- <nuxt-link to="submit_listing">
-                      <h3 style="text-align: left; color: #ffce10">Submit your startup now</h3>
+                      <h3 style="text-align: left; color: var(--main-bg-color)">Submit your startup now</h3>
                     </nuxt-link>-->
                   </div>
                 </div>
@@ -267,7 +267,7 @@
   color: #4e4e4e;
 }
 .product-link:hover {
-  color: #ffce10;
+  color: var(--main-bg-color);
 }
 
 .tg-listing-head .tg-titlebox {

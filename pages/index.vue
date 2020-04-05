@@ -616,6 +616,21 @@ export default {
   border-radius: 0;
 }
 
+
+@media (max-width: 480px) and (min-width: 200px){
+  #search-input{
+    flex-direction: column;
+    padding:  0 10px
+  }
+
+  #location-search-list{
+    width: 100%!important;
+    margin-left: 0!important
+  }
+}
+
+
+
 #search-input input.form-control {
   border-radius: 0 !important;
 }

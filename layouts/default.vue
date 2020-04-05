@@ -22,7 +22,7 @@ export default {
 </script>
 <style>
 :root {
-  --main-bg-color: #ffce10;
+  --main-bg-color: var(--main-bg-color);
 }
 
 body {

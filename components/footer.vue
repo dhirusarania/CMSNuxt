@@ -63,7 +63,7 @@
                       name: 'startup-details-id',
                       params: { id: x.id }
                     }"
-                    style="color: #ffce10"
+                    style="color: var(--main-bg-color)"
                     ><i
                       class="fa fa-hand-o-right"
                       style="margin-right: 10px"

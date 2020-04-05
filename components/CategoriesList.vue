@@ -23,7 +23,7 @@
               </div>
               <div class="blind line_2"></div>
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-12" v-for="(x, y) in categoryList" :key="y">
+            <div class="col-md-3 col-sm-6 col-xs-12" v-for="(x, y) in categoryList.slice(0, 8)" :key="y">
               <div class="categorie_item" v-bind:id="x.id" @click="getListing(x.id)">
                 <div class="cate_item_block hi-icon-effect-8">
                   <h1>

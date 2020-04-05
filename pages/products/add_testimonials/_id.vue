@@ -150,7 +150,7 @@
         payload.append("userImage", this.file);
         payload.append("testimonial", this.testimonial);
         this.$store.dispatch("addTestimonial", payload).then(res => {
-          this.$router.push("/startup/listing");
+          this.$router.back();
         });
       }
     }

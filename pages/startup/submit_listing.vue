@@ -455,7 +455,7 @@ export default {
       payload.append("key_team_members", this.key_members);
       payload.append("incubators", this.incubators);
       payload.append("accelerators", this.accelerators);
-      payload.append("pitch", JSON.stringify(quill.getContents()));
+      payload.append("pitch", quill.root.innerHTML);
       payload.append("investors", this.investors);
       payload.append("date_of_launch", date);
       if (this.file) {
@@ -511,7 +511,7 @@ export default {
 }
 
 .asterisk {
-  color: #ffce10;
+  color: var(--main-bg-color);
 }
 
 .asterisk-red {

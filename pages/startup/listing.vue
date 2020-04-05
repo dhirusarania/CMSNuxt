@@ -174,7 +174,7 @@
                       You did not submit any startup
                     </h3>
                     <nuxt-link to="/startup/submit_listing">
-                      <h3 style="text-align: left; color: #ffce10">
+                      <h3 style="text-align: left; color: var(--main-bg-color)">
                         Submit your startup now
                       </h3>
                     </nuxt-link>
@@ -256,7 +256,7 @@
 }
 
 .product-num:hover {
-  background-color: #ffce10;
+  background-color: var(--main-bg-color);
   color: #263a50;
 }
 </style>

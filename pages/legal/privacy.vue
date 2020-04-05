@@ -74,8 +74,5 @@ export default {
 </script>
 
 <style>
-.about-img {
-  max-height: 250px;
-  margin-bottom: 30px;
-}
+
 </style>

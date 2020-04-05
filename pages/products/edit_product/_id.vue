@@ -142,6 +142,7 @@
                           class="form-control"
                           type="file"
                           id="file"
+                          accept="video/*"
                           v-if="background == 0"
                           ref="file"
                           v-on:change="handleFileUpload()"
@@ -195,7 +196,8 @@ export default {
       video_url_this: "",
       video_name: "",
       isVideo: false,
-      background: 0
+      background: 0,
+      max_file: 50
     };
   },
 
@@ -227,8 +229,10 @@ export default {
 
         if (this.isVideo) {
           this.video_url = res.data.video_url;
+          this.background = 1
         } else {
           this.video_url = res.data.product_video;
+          this.background = 0
         }
 
         this.startup_id = res.data.startup_name.id;
@@ -237,7 +241,6 @@ export default {
         this.product_name = res.data.product_name;
         this.app_link = res.data.product_app_link;
         this.active_users = res.data.active_users;
-        this.background = res.data.isVideo
         this.post = JSON.parse(res.data.description);
 
         quill = new Quill("#editor-container", {
@@ -261,7 +264,12 @@ export default {
     },
 
     handleFileUpload: function() {
-      this.file = this.$refs.file.files[0];
+      if (this.$refs.file.files[0].size > this.max_file) {
+        alert("File size must under " + this.max_file + " MB!");
+        $("#file").val("");
+      } else {
+        this.file = this.$refs.file.files[0];
+      }
     },
 
     updateProduct: function() {
@@ -288,7 +296,7 @@ export default {
         payload.append("video_url", this.video_url);
       }
       this.$store.dispatch("updateProduct", payload).then(res => {});
-      this.$router.push("/startup/listing");
+      this.$router.back();
     }
   }
 };

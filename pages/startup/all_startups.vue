@@ -94,10 +94,10 @@
             <div class="row">
               <h4 class="col-xs-12" style="letter-spacing: 1px;">
                 Total {{ length }}
-                <span style="color: #ffce10">results</span> found
+                <span style="color: var(--main-bg-color)">results</span> found
                 <span v-if="cat_bool">
                   in {{ category_name }}
-                  <span style="color: #ffce10">category</span>
+                  <span style="color: var(--main-bg-color)">category</span>
                 </span>
                 <hr />
               </h4>
@@ -156,13 +156,13 @@
                           <i class="fa fa-map-marker"></i>
                           {{ x.country }}
                         </h2>
-                        <span>
+                        <!-- <span>
                           <i class="fa fa-star"></i>
                           <i class="fa fa-star"></i>
                           <i class="fa fa-star"></i>
                           <i class="fa fa-star"></i>
                           <i class="fa fa-star-o"></i>
-                        </span>
+                        </span> -->
                       </div>
                     </div>
                   </div>
@@ -388,7 +388,7 @@ export default {
 }
 
 .cat_class:hover {
-  color: #ffce10;
+  color: var(--main-bg-color);
 }
 
 .hide {

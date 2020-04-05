@@ -36,9 +36,7 @@
             <div class="blind line_2"></div>
           </div>
           <span class="clt-content">
-            <div v-for="(item, i) in post" :key="i">
-              <post-paragraph v-if="item.type === 'paragraph'" :data="item" />
-              <post-list v-if="item.type === 'list'" :data="item" />
+            <div v-html="post">
             </div>
             <!-- Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing.
             <br />
@@ -123,10 +121,11 @@
                       </a>
                     </div>
                   </div>
+                  -->
                   <div class="form-group col-xs-12">
                     <button class="btn pull-right" type="submit">Submit</button>
                   </div>
-                </div> -->
+                <!-- </div>  -->
               </form>
             </div>
             <div class="col-xs-12 col-lg-4 col-sm-12">
@@ -227,7 +226,7 @@
       getActiveContactCMS: function() {
         this.$store.dispatch("getActiveContactCMS").then(res => {
           res.data.map(item => {
-            this.post = JSON.parse(item.contact_info);
+            this.post = item.contact_info;
             this.location = item.location;
             this.phone1 = item.phone1;
             this.phone2 = item.phone2;

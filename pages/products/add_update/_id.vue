@@ -115,7 +115,7 @@
       };
     },
     mounted() {
-      this.product_name = this.$route.params.product;
+      this.product_name = "this.$route.params.product";
       quill = new Quill("#editor-container", {
         modules: {
           toolbar: [
@@ -145,7 +145,7 @@
         localStorage.clear();
         Cookies.remove("x-access-token");
         this.$store.commit("authentication", false);
-        this.$router.push("/");
+        this.$router.back("/");
       },
 
       handleFileUpload: function() {
@@ -168,7 +168,7 @@
         // payload.append("latest_updates", JSON.stringify(outputData.blocks));
         payload.append("update_video", this.file);
         this.$store.dispatch("postUpdate", payload).then(res => {});
-        this.$router.push("/startup/listing");
+        this.$router.back();
       }
     }
   };

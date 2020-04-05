@@ -288,7 +288,7 @@
 }
 
 .app-link:hover {
-  color: #ffce10;
+  color: var(--main-bg-color);
 }
 
 .app-link:active {
@@ -306,7 +306,7 @@
 }
 
 .link-class {
-  background-color: #ffce10;
+  background-color: var(--main-bg-color);
   padding: 10px;
   color: black;
   float: right;
@@ -322,6 +322,6 @@
   color: grey;
 }
 .update-class:hover {
-  color: #ffce10;
+  color: var(--main-bg-color);
 }
 </style>

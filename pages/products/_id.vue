@@ -819,7 +819,7 @@ export default {
 }
 
 .app-link:hover {
-  color: #ffce10;
+  color: var(--main-bg-color);
 }
 
 .app-link:active {
@@ -843,7 +843,7 @@ export default {
 }
 
 .link-class {
-  background-color: #ffce10;
+  background-color: var(--main-bg-color);
   padding: 10px;
   color: black;
   float: right;
@@ -859,7 +859,7 @@ export default {
   color: grey;
 }
 .update-class:hover {
-  color: #ffce10;
+  color: var(--main-bg-color);
 }
 
 .edit-class {
@@ -872,7 +872,7 @@ export default {
 }
 
 .edit-class:hover {
-  background-color: #ffce10;
+  background-color: var(--main-bg-color);
   color: black;
 }
 

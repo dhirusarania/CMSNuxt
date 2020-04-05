@@ -36,9 +36,7 @@
               </div>
               <div class="blind line_2"></div>
             </div>
-            <div v-for="(item, i) in post" :key="i">
-              <post-paragraph v-if="item.type === 'paragraph'" :data="item" />
-              <post-list v-if="item.type === 'list'" :data="item" />
+            <div v-html="post">
             </div>
           </div>
           <div class="col-md-4 col-sm-12 col-xs-12 user-lt-above">
@@ -57,7 +55,7 @@
                 <div class="vfx-item-black-top-arrow">
                   <i class="fa fa-file"></i>
                 </div>
-                <div id="count-1" class="vfx-coutter-item count_number vfx-item-count-up">{{listing}}</div>
+                <div id="count-1" class="vfx-coutter-item count_number vfx-item-count-up">{{info.listing}}</div>
                 <div class="counter_text">Listings</div>
               </div>
             </div>
@@ -69,7 +67,7 @@
                 <div class="vfx-item-black-top-arrow">
                   <i class="fa fa-users"></i>
                 </div>
-                <div id="count-2" class="vfx-coutter-item count_number vfx-item-count-up">2450</div>
+                <div id="count-2" class="vfx-coutter-item count_number vfx-item-count-up">{{info.users}}</div>
                 <div class="counter_text">Users</div>
               </div>
             </div>
@@ -78,7 +76,7 @@
                 <div class="vfx-item-black-top-arrow">
                   <i class="fa fa-th"></i>
                 </div>
-                <div id="count-3" class="vfx-coutter-item count_number vfx-item-count-up">8</div>
+                <div id="count-3" class="vfx-coutter-item count_number vfx-item-count-up">{{info.category}}</div>
                 <div class="counter_text">Categories</div>
               </div>
             </div>
@@ -157,7 +155,8 @@ export default {
       static_data: [],
       listing: 0,
       users: 0,
-      category: 0
+      category: 0,
+      info: []
     };
   },
   mounted() {
@@ -166,6 +165,7 @@ export default {
     this.getFeaturedStartups();
     this.getStartups();
     this.activatedAboutCMS();
+    this.get_count();
     $("#about")
       .addClass("active")
       .siblings()
@@ -177,11 +177,15 @@ export default {
     });
   },
   methods: {
+    get_count: function() {
+      this.$store.dispatch("get_count").then(res => {
+        this.info = res.data
+      });
+    },
     activatedAboutCMS: function() {
       this.$store.dispatch("activatedAboutCMS").then(res => {
         res.data.map(item => {
-          this.post = JSON.parse(item.about_info);
-
+          this.post = item.about_info;
           this.image_url = item.about_image;
         });
       });
@@ -477,7 +481,7 @@ export default {
 
 <style>
 .about-img {
-  max-height: 250px;
-  margin-bottom: 30px;
+  max-height: 100%;
+  margin-bottom: 0;
 }
 </style>
