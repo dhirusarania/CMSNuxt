@@ -59,47 +59,47 @@
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
-                    <hr style="margin-top: 0px; border: 3px solid #009e74" />
+                    <hr style="margin-top: 0px; border: 3px solid var(--main-bg-color)" />
 
                     <p class="st-text-1">{{ startup }}</p>
                     <p class="st-sub-text-1">
-                      <i class="fa fa-registered" style="color: #009e74"></i>
+                      <i class="fa fa-registered" style="color: var(--main-bg-color)"></i>
                       registered to
                     </p>
 
                     <p class="st-text-2">{{ stage }}</p>
                     <p class="st-sub-text-2">
-                      <i class="fa fa-angle-double-right" aria-hidden="true" style="color: #009e74"></i>
+                      <i class="fa fa-angle-double-right" aria-hidden="true" style="color: var(--main-bg-color)"></i>
                       stage
                     </p>
 
                     <p class="st-text-3">{{ product_name }}</p>
                     <p class="st-sub-text-3">
-                      <i class="fa fa-product-hunt" aria-hidden="true" style="color: #009e74"></i>
+                      <i class="fa fa-product-hunt" aria-hidden="true" style="color: var(--main-bg-color)"></i>
                       product name
                     </p>
 
                     <p class="st-text-2">{{ product_cat }}</p>
                     <p class="st-sub-text-2">
-                      <i class="fa fa-database" style="color: #009e74"></i>
+                      <i class="fa fa-database" style="color: var(--main-bg-color)"></i>
                       category
                     </p>
 
                     <p class="st-text-2">{{ app_link }}</p>
                     <p class="st-sub-text-2">
-                      <i class="fa fa-link" style="color: #009e74"></i>
+                      <i class="fa fa-link" style="color: var(--main-bg-color)"></i>
                       website/app link
                     </p>
 
                     <p class="st-text-2">{{ date_added }}</p>
                     <p class="st-sub-text-2">
-                      <i class="fa fa-calendar" aria-hidden="true" style="color: #009e74"></i>
+                      <i class="fa fa-calendar" aria-hidden="true" style="color: var(--main-bg-color)"></i>
                       date added
                     </p>
 
                     <p class="st-text-2">{{ users }}</p>
                     <p class="st-sub-text-2">
-                      <i class="fa fa-users" style="color: #009e74"></i> number
+                      <i class="fa fa-users" style="color: var(--main-bg-color)"></i> number
                       of users/downloads
                     </p>
                     <button class="st-btn-11">Back This Product</button>
@@ -116,11 +116,11 @@
                         id="test"
                         @click="openbtn('testimonials')"
                       >Testimonials</button>
-                      <!-- <button
+                      <button
                         class="tablinks"
                         id="rate"
                         @click="openbtn('rankings')"
-                      >Rankings/Ratings</button>-->
+                      >Rankings/Ratings</button>
                     </div>
 
                     <div id="description" class="tabcontent">
@@ -142,6 +142,7 @@
 
                         <div v-for="(l, m) in update_list" :key="m">
                           <vue-timeline-update
+                            :title="''"
                             :date="new Date(l.added_date)"
                             :description="l.latest_updates"
                             icon="code"
@@ -219,7 +220,7 @@
                         <div class="faq-11">
                           <p style="font-size: 16px">Your Review</p>
                           <p style="font-size: 16px" v-if="auth_bool">
-                            <span style="color: #009e74">Note:</span> Please
+                            <span style="color: var(--main-bg-color)">Note:</span> Please
                             login to post your review
                           </p>
                           <div class="row" style="display: flex">
@@ -400,7 +401,7 @@
                                     aria-hidden="true"
                                     v-for="(o, p) in j.ratings"
                                     :key="p"
-                                    style="color: #009e74"
+                                    style="color: var(--main-bg-color)"
                                   ></i>
                                 </div>
 
@@ -422,6 +423,7 @@
         </div>
       </div>
     </div>
+     <Auth />
   </div>
 </template>
 
@@ -431,15 +433,16 @@ import PostImage from "~/components/Image.vue";
 import PostHeading from "~/components/Heading.vue";
 import PostParagraph from "~/components/Paragraph.vue";
 import PostList from "~/components/List.vue";
+import Auth from "~/components/authentication.vue";
 let player;
 export default {
-  components: { PostImage, PostHeading, PostParagraph, PostList },
-  async asyncData(ctx) {
-    const payload = new FormData();
-    payload.append("id", ctx.route.params.id);
-    const res = await ctx.store.dispatch("getUpdates", payload);
-    return { update_list: res.data };
-  },
+  components: { PostImage, PostHeading, PostParagraph, PostList, Auth },
+  // async asyncData(ctx) {
+  //   const payload = new FormData();
+  //   payload.append("id", ctx.route.params.id);
+  //   const res = await ctx.store.dispatch("getUpdates", payload);
+  //   return { update_list: res.data };
+  // },
   data() {
     return {
       post: [],
@@ -479,7 +482,8 @@ export default {
       testimonial_bool: false,
       product_testimonials: [],
       isVideo: false,
-      video_url: ""
+      video_url: "",
+      update_list: []
     };
   },
   computed: {
@@ -494,6 +498,15 @@ export default {
     if (localStorage.getItem("bearer")) {
       this.auth_bool = false;
     }
+
+    var payload = new FormData()
+      payload.append("id", this.$route.params.id)
+    
+    this.$store.dispatch("getUpdates", payload).then(res =>{
+
+      this.update_list = res.data 
+    });
+
     this.getUserRatings();
     this.getUser();
     this.getUserAdditionalDetails();
@@ -596,7 +609,7 @@ export default {
           theme: "bubble"
         });
 
-        quill.setContents(JSON.parse(this.update_list[i].latest_updates));
+        // quill.setContents(JSON.parse(this.update_list[i].latest_updates));
       });
     },
 
@@ -1063,7 +1076,7 @@ export default {
 .st-btn-11 {
   margin-top: 20px;
   width: 100%;
-  background-color: #009e74;
+  background-color: var(--main-bg-color);
   border: none;
   padding: 15px 30px;
   color: white;
@@ -1075,7 +1088,7 @@ export default {
 }
 
 .btn-activated {
-  background-color: #009e74 !important;
+  background-color: var(--main-bg-color) !important;
   color: white;
 }
 
@@ -1201,7 +1214,7 @@ export default {
 
 /* Selected state of the stars */
 .rating-stars ul > li.star.selected > i.fa {
-  color: #009e74;
+  color: var(--main-bg-color);
 }
 
 .rating-stars ul {
@@ -1233,7 +1246,7 @@ export default {
 
 /* Selected state of the stars */
 .rating-stars1 ul > li.star1.selected > i.fa {
-  color: #009e74;
+  color: var(--main-bg-color);
 }
 
 .rating-stars1 ul {
@@ -1244,7 +1257,7 @@ export default {
   padding-left: 10px;
   padding-top: 10px;
   font-size: 16px;
-  color: #009e74;
+  color: var(--main-bg-color);
 }
 
 .pHover:hover {
@@ -1263,11 +1276,11 @@ export default {
 }
 
 .form-control:focus {
-  border-color: #009e74;
+  border-color: var(--main-bg-color);
 }
 
 .review_button {
-  background-color: #009e74;
+  background-color: var(--main-bg-color);
   margin: 10px;
   border: none;
   padding: 10px 20px;
@@ -1314,7 +1327,7 @@ export default {
 }
 
 .star-ratings .fill-ratings {
-  color: #009e74;
+  color: var(--main-bg-color);
   padding: 0;
   position: absolute;
   z-index: 1;

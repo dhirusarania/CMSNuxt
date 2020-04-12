@@ -36,8 +36,7 @@
             <div class="blind line_2"></div>
           </div>
           <span class="clt-content">
-            <div v-html="post">
-            </div>
+            <div v-html="post"></div>
             <!-- Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing.
             <br />
             <br />Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
@@ -46,7 +45,12 @@
           </span>
           <div class="from-list-lt">
             <div class="col-xs-12 col-lg-8 col-sm-12">
-              <form class="form-float form-alt">
+              <form
+                ref="form"
+                class="form-float form-alt"
+                id="formm"
+                @submit.prevent="submitContact"
+              >
                 <div class="fb-render"></div>
                 <!-- <div class="row">
                   <div class="form-group col-xs-12 col-sm-6">
@@ -121,10 +125,10 @@
                       </a>
                     </div>
                   </div>
-                  -->
-                  <div class="form-group col-xs-12">
-                    <button class="btn pull-right" type="submit">Submit</button>
-                  </div>
+                -->
+                <div class="form-group col-xs-12">
+                  <button class="btn pull-right" type="submit">Submit</button>
+                </div>
                 <!-- </div>  -->
               </form>
             </div>
@@ -195,59 +199,80 @@
 </template>
 
 <script>
-  import Auth from "~/components/authentication.vue";
-  import PostParagraph from "~/components/Paragraph.vue";
-  import PostList from "~/components/List.vue";
+import Auth from "~/components/authentication.vue";
+import PostParagraph from "~/components/Paragraph.vue";
+import PostList from "~/components/List.vue";
 
-  export default {
-    components: {
-      Auth,
-      PostParagraph,
-      PostList
-    },
-    data() {
-      return {
-        post: [],
-        location: "",
-        phone1: "",
-        phone2: "",
-        email: ""
-      };
-    },
-    mounted() {
-      this.getActiveContactCMS();
-      this.getContactForm();
-      $("#contact")
-        .addClass("active")
-        .siblings()
-        .removeClass("active");
-    },
-    methods: {
-      getActiveContactCMS: function() {
-        this.$store.dispatch("getActiveContactCMS").then(res => {
-          res.data.map(item => {
-            this.post = item.contact_info;
-            this.location = item.location;
-            this.phone1 = item.phone1;
-            this.phone2 = item.phone2;
-            this.email = item.email;
-          });
+export default {
+  components: {
+    Auth,
+    PostParagraph,
+    PostList
+  },
+  data() {
+    return {
+      post: [],
+      location: "",
+      phone1: "",
+      phone2: "",
+      email: ""
+    };
+  },
+  mounted() {
+    this.getActiveContactCMS();
+    this.getContactForm();
+    $("#contact")
+      .addClass("active")
+      .siblings()
+      .removeClass("active");
+  },
+  methods: {
+    getActiveContactCMS: function() {
+      this.$store.dispatch("getActiveContactCMS").then(res => {
+        res.data.map(item => {
+          this.post = item.contact_info;
+          this.location = item.location;
+          this.phone1 = item.phone1;
+          this.phone2 = item.phone2;
+          this.email = item.email;
         });
-      },
+      });
+    },
 
-      getContactForm: function() {
-        this.$store.dispatch("getContactForm").then(res => {
-          const fbRender = document.getElementById("fb-render");
-          jQuery(function($) {
-            $(".fb-render").formRender({
-              dataType: "json",
-              formData: res.data.form
-            });
-          });
-        });
+    submitContact: function(e) {
+      
+      var payload = {
+        value : JSON.stringify(this.FormDataToJSON(document.getElementById('formm')))
       }
+
+      console.log(payload)
+      
+      this.$store.dispatch('storeContact', payload).then( res => {
+        console.log(res)
+      })
+    },
+    getContactForm: function() {
+      this.$store.dispatch("getContactForm").then(res => {
+        const fbRender = document.getElementById("fb-render");
+        jQuery(function($) {
+          $(".fb-render").formRender({
+            dataType: "json",
+            formData: res.data.form
+          });
+        });
+      });
+    },
+    FormDataToJSON(FormElement) {
+      var formData = new FormData(FormElement);
+      var ConvertedJSON = {};
+      for (const [key, value] of formData.entries()) {
+        ConvertedJSON[key] = value;
+      }
+
+      return ConvertedJSON;
     }
-  };
+  }
+};
 </script>
 
 <style>

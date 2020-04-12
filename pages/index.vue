@@ -31,7 +31,7 @@
               <p>{{line2}}</p>
             </div>
             <div id="search-categorie-item-block">
-              <!-- <form id="categorie-search-form"> -->
+              <form id="categorie-search-form" v-on:submit.prevent="SearchFilter">
               <h1>{{ line3 }}</h1>
               <div class="row" style="margin-top: 20px">
                 <div class="col-12">
@@ -73,7 +73,7 @@
                   </div>
                 </div>
               </div>
-              <!-- </form> -->
+              </form>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@
                   />
                 </div>
                 <div class="listing-form-field clearfix margin-top-20 margin-bottom-20">
-                  <a href="#" style="display: block; text-align: left">Forgot Password?</a>
+                  <!-- <a href="#" style="display: block; text-align: left">Forgot Password?</a> -->
                 </div>
                 <div class="listing-form-field">
                   <input

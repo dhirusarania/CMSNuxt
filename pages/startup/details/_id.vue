@@ -41,23 +41,23 @@
             <img :src="thumbnail" class="st-thumb" />
             <div class="col-12 col-md-4">
               <span>
-                <i class="fa fa-map-marker" aria-hidden="true" style="color: #009e74"></i>
+                <i class="fa fa-map-marker" aria-hidden="true" style="color: var(--main-bg-color)"></i>
                 <p
                   style="display: inline-block; font-size: 14px; font-weight: 300"
                 >{{ city }}, {{ country }}</p>
               </span>
             </div>
             <div class="col-12 col-md-4">
-              <i class="fa fa-calendar" aria-hidden="true" style="color: #009e74"></i>
+              <i class="fa fa-calendar" aria-hidden="true" style="color: var(--main-bg-color)"></i>
               <p style="display: inline-block; font-size: 14px; font-weight: 300">{{ estd }}</p>
             </div>
             <div class="col-12 col-md-4">
-              <i class="fa fa-users" aria-hidden="true" style="color: #009e74"></i>
+              <i class="fa fa-users" aria-hidden="true" style="color: var(--main-bg-color)"></i>
               <p style="display: inline-block; font-size: 14px; font-weight: 300">{{ team_size }}</p>
             </div>
           </div>
           <div class="col-12 col-sm-4" style="margin-top: 40px">
-            <hr style="margin-top: 0px; border: 3px solid #009e74" />
+            <hr style="margin-top: 0px; border: 3px solid var(--main-bg-color)" />
 
             <!-- <p class="st-text-1">{{ team_size }}</p>
             <p class="st-sub-text-1">team size</p>-->
@@ -168,25 +168,29 @@
             <div id="pitch-section" class="tabcontent">
               <div class="row">
                 <h3>Pitch / Campaign</h3>
-                <div>
+                <div v-if="auth_bool">
                   <a :href="pitch_file" target="_blank" download>Download Campaign File</a>
                 </div>
               </div>
               <div class="row" style="padding-top: 20px">
-                <div
-                  v-html="pitch_info"
-                ></div>
+                <div v-html="pitch_info"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <Auth />
   </div>
 </template>
 
 <script>
+import Auth from "~/components/authentication.vue";
+
 export default {
+  components: {
+    Auth
+  },
   data() {
     return {
       name: "",
@@ -210,7 +214,8 @@ export default {
       state: "",
       loading_bool: true,
       pitch_file: "",
-      pitch_info: ""
+      pitch_info: "",
+      auth_bool: false
     };
   },
   mounted() {
@@ -220,6 +225,12 @@ export default {
       .removeClass("active");
     this.getStartupDetails();
     this.getStProducts();
+
+  if (localStorage.getItem("bearer")) {
+      this.auth_bool = true;
+    }
+
+
   },
   methods: {
     getStartupDetails: function() {
@@ -446,7 +457,7 @@ export default {
 .st-btn-11 {
   margin-top: 20px;
   width: 100%;
-  background-color: #009e74;
+  background-color: var(--main-bg-color);
   border: none;
   padding: 15px 30px;
   color: white;
@@ -490,7 +501,7 @@ export default {
 }
 
 .btn-activated {
-  background-color: #009e74 !important;
+  background-color: var(--main-bg-color) !important;
   color: white;
 }
 
@@ -518,7 +529,7 @@ export default {
 }
 
 .product-nuxt-link {
-  background-color: #009e74;
+  background-color: var(--main-bg-color);
   border: none;
   text-decoration: none;
   padding: 10px 20px;

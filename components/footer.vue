@@ -160,7 +160,7 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-sm-12">
-            <p class="text-xs-center">Copyright © 2017 All Rights Reserved.</p>
+            <p class="text-xs-center">Copyright © {{date}} All Rights Reserved by RadRap Enterprises LLP.</p>
           </div>
           <!-- <div><a href="#" class="scrollup">Scroll</a></div> -->
         </div>
@@ -174,6 +174,7 @@
     data() {
       return {
         about: "",
+        date: new Date().getFullYear(),
         footerStartupList: []
       };
     },

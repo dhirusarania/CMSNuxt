@@ -107,5 +107,7 @@ export const state = () => ({
 
     addTestimonial: url + "/testimonial_post",
 
-    get_count: url + "/get_count"
+    get_count: url + "/get_count",
+
+    storeContact: url + "/storecontact"
 });

@@ -45,7 +45,7 @@
                   />
                 </div>
                 <div class="listing-form-field clearfix margin-top-20 margin-bottom-20">
-                  <a href="#" style="display: block; text-align: left">Forgot Password?</a>
+                  <!-- <a href="#" style="display: block; text-align: left">Forgot Password?</a> -->
                 </div>
                 <div class="listing-form-field">
                   <input

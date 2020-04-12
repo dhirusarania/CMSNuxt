@@ -11,7 +11,8 @@ export const state = () => {
         category: 0,
         header_img: "",
         // token: "token " + localStorage.getItem("token"),
-        bearer: localStorage.getItem("bearer")
+        // bearer: localStorage.getItem("bearer")
+        bearer: ""
     };
 };
 
@@ -953,6 +954,22 @@ export const actions = {
             axios({
                     method: "GET",
                     url: state.api.get_count,
+                    contentType: "application/json"
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    },
+    storeContact({ commit, state }, payload) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "POST",
+                    data: payload,
+                    url: state.api.storeContact,
                     contentType: "application/json"
                 })
                 .then(res => {
