@@ -11,8 +11,8 @@ export const state = () => {
         category: 0,
         header_img: "",
         // token: "token " + localStorage.getItem("token"),
-        // bearer: localStorage.getItem("bearer")
-        bearer: ""
+        bearer: "",
+        // bearer: ""
     };
 };
 

@@ -17,6 +17,8 @@ export default {
     this.$store.dispatch("getHomeCMS").then(res => {
       document.documentElement.style.setProperty("--main-bg-color", res.data[0].site_color);
     });
+    if(localStorage.getItem("bearer") != "" && localStorage.getItem("bearer") != undefined && localStorage.getItem("bearer") != null)
+    this.$store.commit('bearer', localStorage.getItem("bearer"))
   }
 };
 </script>

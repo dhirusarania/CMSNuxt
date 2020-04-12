@@ -218,12 +218,12 @@
                     <div id="rankings" class="tabcontent">
                       <div class="submit_listing_box">
                         <div class="faq-11">
-                          <p style="font-size: 16px">Your Review</p>
+                          <p style="font-size: 16px" v-if="!auth_bool">Your Review</p>
                           <p style="font-size: 16px" v-if="auth_bool">
                             <span style="color: var(--main-bg-color)">Note:</span> Please
                             login to post your review
                           </p>
-                          <div class="row" style="display: flex">
+                          <div class="row" style="display: flex" v-if="!auth_bool">
                             <div>
                               <img
                                 :src="dp_url"
@@ -252,10 +252,10 @@
                               </div>
                             </div>
                           </div>
-                          <div class="row">
-                            <p class="pHover" v-if="review_bool">Write a review</p>
+                          <div class="row"  v-if="!auth_bool">
+                            <p class="pHover" v-if="!auth_bool">Write a review</p>
                           </div>
-                          <div class="row" id="review_box" v-if="review_bool">
+                          <div class="row" id="review_box" v-if="!auth_bool">
                             <form>
                               <textarea
                                 style="margin-left: 10px"
@@ -265,13 +265,13 @@
                                 rows="10"
                                 v-model="review_content"
                               ></textarea>
-                              <button class="review_button" @click="submitReview">Submit</button>
+                              <button class="review_button"  v-if="!auth_bool" @click="submitReview">Submit</button>
                             </form>
                           </div>
                           <div v-else>
                             <div class="row">
                               <p style="padding-left: 10px" class="qwe">{{ review_content }}</p>
-                              <button
+                              <button  v-if="!auth_bool"
                                 class="review_button qwe"
                                 @click="showHideBlock"
                               >Edit Your Review</button>
