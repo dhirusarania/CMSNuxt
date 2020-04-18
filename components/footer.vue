@@ -10,7 +10,7 @@
               <!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
               justo lectus, consectetur quis nisi vitae, Nunc eget ultrices
               ligula.-->
-              {{ about }}
+              {{ about.about_us }}
             </p>
             <nuxt-link to="/about" class="btn-primary-link more-detail">
               <i class="fa fa-hand-o-right"></i> Read More
@@ -18,28 +18,28 @@
             <h2>Follow Us</h2>
             <hr />
             <ul class="social-icons">
-              <li>
-                <a href="#">
+              <li v-if="about.facebook != ''">
+                <a target="_blank" :href="about.facebook">
                   <i class="fa fa-facebook"></i>
                 </a>
               </li>
-              <li>
-                <a href="#">
+              <li v-if="about.twitter != ''">
+                <a target="_blank" :href="about.twitter">
                   <i class="fa fa-twitter"></i>
                 </a>
               </li>
-              <li>
-                <a href="#">
+              <li v-if="about.google != ''">
+                <a target="_blank" :href="about.google">
                   <i class="fa fa-google-plus"></i>
                 </a>
               </li>
-              <li>
-                <a href="#">
+              <li v-if="about.pinterest != ''">
+                <a target="_blank" :href="about.pinterest">
                   <i class="fa fa-pinterest-p"></i>
                 </a>
               </li>
-              <li>
-                <a href="#">
+              <li v-if="about.youtube != ''">
+                <a target="_blank" :href="about.youtube">
                   <i class="fa fa-youtube-play"></i>
                 </a>
               </li>
@@ -64,12 +64,9 @@
                       params: { id: x.id }
                     }"
                     style="color: var(--main-bg-color)"
-                    ><i
-                      class="fa fa-hand-o-right"
-                      style="margin-right: 10px"
-                    ></i
-                    >Read More</nuxt-link
                   >
+                    <i class="fa fa-hand-o-right" style="margin-right: 10px"></i>Read More
+                  </nuxt-link>
                   <br />
                 </div>
               </li>
@@ -94,9 +91,9 @@
             <hr />
             <ul class="use-slt-link">
               <li>
-               <nuxt-link to="/legal/privacy">
+                <nuxt-link to="/legal/privacy">
                   <i class="fa fa-hand-o-right"></i>&nbsp;&nbsp;Privacy & Policy
-               </nuxt-link>
+                </nuxt-link>
               </li>
               <li>
                 <a href="#">
@@ -126,27 +123,13 @@
             <hr />
             <form class="form-alt">
               <div class="form-group">
-                <input
-                  type="text"
-                  placeholder="Name :-"
-                  required
-                  class="form-control"
-                />
+                <input type="text" placeholder="Name :-" required class="form-control" />
               </div>
               <div class="form-group">
-                <input
-                  type="text"
-                  placeholder="Email :-"
-                  required
-                  class="form-control"
-                />
+                <input type="text" placeholder="Email :-" required class="form-control" />
               </div>
               <div class="form-group">
-                <textarea
-                  placeholder="Message :-"
-                  required
-                  class="form-control"
-                ></textarea>
+                <textarea placeholder="Message :-" required class="form-control"></textarea>
               </div>
               <div class="form-group">
                 <button type="submit" class="btn-quote">Send Now</button>
@@ -160,7 +143,9 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-sm-12">
-            <p class="text-xs-center">Copyright © {{date}} All Rights Reserved by RadRap Enterprises LLP.</p>
+            <p
+              class="text-xs-center"
+            >Copyright © {{date}} All Rights Reserved by RadRap Enterprises LLP.</p>
           </div>
           <!-- <div><a href="#" class="scrollup">Scroll</a></div> -->
         </div>
@@ -170,33 +155,33 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        about: "",
-        date: new Date().getFullYear(),
-        footerStartupList: []
-      };
-    },
-    mounted() {
-      this.activatedFooterCMS();
-      this.getFooterStartUps();
-    },
-    methods: {
-      activatedFooterCMS: function() {
-        this.$store.dispatch("activatedFooterCMS").then(res => {
-          res.data.map(item => {
-            this.about = item.about_us;
-          });
+export default {
+  data() {
+    return {
+      about: "",
+      date: new Date().getFullYear(),
+      footerStartupList: []
+    };
+  },
+  mounted() {
+    this.activatedFooterCMS();
+    this.getFooterStartUps();
+  },
+  methods: {
+    activatedFooterCMS: function() {
+      this.$store.dispatch("activatedFooterCMS").then(res => {
+        res.data.map(item => {
+          this.about = item;
         });
-      },
-      getFooterStartUps: function() {
-        this.$store.dispatch("getStartups").then(res => {
-          this.footerStartupList = res.data.reverse().splice(0, 2);
-        });
-      }
+      });
+    },
+    getFooterStartUps: function() {
+      this.$store.dispatch("getStartups").then(res => {
+        this.footerStartupList = res.data.reverse().splice(0, 2);
+      });
     }
-  };
+  }
+};
 </script>
 
 <style>

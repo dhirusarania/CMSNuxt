@@ -684,7 +684,7 @@ export default {
     rgba(255, 255, 255, 0.267)
   );
   width: 100%;
-  min-height: 600px;
+  height: 100%;
   background-size: cover;
   background-color: #16110d;
   background-position: center;
@@ -696,7 +696,7 @@ export default {
   font-size: 40px;
   font-weight: 600;
   margin-top: 100px;
-  text-shadow: 2px 2px white;
+  /* text-shadow: 2px 2px white; */
 }
 
 .banner-text-2 {
@@ -705,7 +705,7 @@ export default {
   font-family: GothamRounded;
   font-size: 40px;
   font-weight: 600;
-  text-shadow: 2px 2px white;
+  /* text-shadow: 2px 2px white; */
 }
 
 .banner-text-3 {
@@ -725,7 +725,7 @@ export default {
   color: white;
   border: none;
   font-size: 20px;
-  box-shadow: 4px 8px white;
+  /* box-shadow: 4px 8px white; */
 }
 
 .st-bt-11:hover {

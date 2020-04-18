@@ -171,6 +171,9 @@
                 <div v-if="auth_bool">
                   <a :href="pitch_file" target="_blank" download>Download Campaign File</a>
                 </div>
+                <div v-else>
+                  <p style="cursor: pointer" @click="checkAuth">Download Campaign File</p>
+                </div>
               </div>
               <div class="row" style="padding-top: 20px">
                 <div v-html="pitch_info"></div>
@@ -226,11 +229,9 @@ export default {
     this.getStartupDetails();
     this.getStProducts();
 
-  if (localStorage.getItem("bearer")) {
+    if (localStorage.getItem("bearer")) {
       this.auth_bool = true;
     }
-
-
   },
   methods: {
     getStartupDetails: function() {
@@ -287,6 +288,9 @@ export default {
       });
     },
 
+    checkAuth: function(btnName) {
+      $("#qwe-btn1 button").click();
+    },
     openbtn: function(btnName) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");

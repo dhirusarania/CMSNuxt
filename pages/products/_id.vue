@@ -50,12 +50,7 @@
                       <source :src="product_video" type="video/webm" />
                     </video>
                     <div v-else class="plyr__video-embed" id="player">
-                      <iframe
-                        :src="video_url"
-                        allowfullscreen
-                        allowtransparency
-                        allow="autoplay"
-                      ></iframe>
+                      <iframe :src="video_url" allowfullscreen allowtransparency allow="autoplay"></iframe>
                     </div>
                   </div>
                   <div class="col-12 col-sm-4">
@@ -69,13 +64,21 @@
 
                     <p class="st-text-2">{{ stage }}</p>
                     <p class="st-sub-text-2">
-                      <i class="fa fa-angle-double-right" aria-hidden="true" style="color: var(--main-bg-color)"></i>
+                      <i
+                        class="fa fa-angle-double-right"
+                        aria-hidden="true"
+                        style="color: var(--main-bg-color)"
+                      ></i>
                       stage
                     </p>
 
                     <p class="st-text-3">{{ product_name }}</p>
                     <p class="st-sub-text-3">
-                      <i class="fa fa-product-hunt" aria-hidden="true" style="color: var(--main-bg-color)"></i>
+                      <i
+                        class="fa fa-product-hunt"
+                        aria-hidden="true"
+                        style="color: var(--main-bg-color)"
+                      ></i>
                       product name
                     </p>
 
@@ -93,7 +96,11 @@
 
                     <p class="st-text-2">{{ date_added }}</p>
                     <p class="st-sub-text-2">
-                      <i class="fa fa-calendar" aria-hidden="true" style="color: var(--main-bg-color)"></i>
+                      <i
+                        class="fa fa-calendar"
+                        aria-hidden="true"
+                        style="color: var(--main-bg-color)"
+                      ></i>
                       date added
                     </p>
 
@@ -221,7 +228,10 @@
                           <p style="font-size: 16px" v-if="!auth_bool">Your Review</p>
                           <p style="font-size: 16px" v-if="auth_bool">
                             <span style="color: var(--main-bg-color)">Note:</span> Please
-                            login to post your review
+                            <span
+                              style="cursor: pointer;color: blue"
+                              @click="checkAuth"
+                            >login</span> to post your review
                           </p>
                           <div class="row" style="display: flex" v-if="!auth_bool">
                             <div>
@@ -236,7 +246,8 @@
                                 <p style="padding-left: 10px; padding-top: 10px">{{ username }}</p>
                               </div>
                               <div class="rating-stars text-center" style="display: block">
-                                <ul id="stars">
+                                <star-rating :star-size="50" v-model="ratingdata"></star-rating>
+                                <!-- <ul id="stars">
                                   <li
                                     class="star"
                                     title
@@ -248,30 +259,33 @@
                                   >
                                     <i class="fa fa-star fa-fw"></i>
                                   </li>
-                                </ul>
+                                </ul>-->
                               </div>
                             </div>
                           </div>
-                          <div class="row"  v-if="!auth_bool">
+                          <div class="row" v-if="!auth_bool">
                             <p class="pHover" v-if="!auth_bool">Write a review</p>
                           </div>
                           <div class="row" id="review_box" v-if="!auth_bool">
-                            <form>
-                              <textarea
-                                style="margin-left: 10px"
-                                name
-                                id
-                                class="textAreaClass form-control"
-                                rows="10"
-                                v-model="review_content"
-                              ></textarea>
-                              <button class="review_button"  v-if="!auth_bool" @click="submitReview">Submit</button>
-                            </form>
+                            <textarea
+                              style="margin-left: 10px"
+                              name
+                              id
+                              class="textAreaClass form-control"
+                              rows="10"
+                              v-model="review_content"
+                            ></textarea>
+                            <button
+                              class="review_button"
+                              v-if="!auth_bool"
+                              @click="submitReview"
+                            >Submit</button>
                           </div>
                           <div v-else>
                             <div class="row">
                               <p style="padding-left: 10px" class="qwe">{{ review_content }}</p>
-                              <button  v-if="!auth_bool"
+                              <button
+                                v-if="!auth_bool"
                                 class="review_button qwe"
                                 @click="showHideBlock"
                               >Edit Your Review</button>
@@ -302,12 +316,11 @@
                                 style="font-size: 40px; text-align: center; margin-top: 30px"
                               >{{ averageRating }}</p>
                               <div class="star-ratings">
-                                <div class="fill-ratings" :style="{ width: `${avgPercent}%` }">
-                                  <span>★★★★★</span>
-                                </div>
-                                <div class="empty-ratings">
-                                  <span>★★★★★</span>
-                                </div>
+                                <star-rating
+                                  :star-size="50"
+                                  :read-only="true"
+                                  v-model="averageRating"
+                                ></star-rating>
                               </div>
                               <p style="font-size: 24px; text-align: center; margin-top: 0px">
                                 <i class="fa fa-user"></i>
@@ -423,7 +436,7 @@
         </div>
       </div>
     </div>
-     <Auth />
+    <Auth />
   </div>
 </template>
 
@@ -475,7 +488,7 @@ export default {
       width3: "",
       width4: "",
       width5: "",
-      averageRating: "",
+      averageRating: 0,
       avgPercent: "",
       totalVotes: "",
       raitngswithreviews: [],
@@ -483,7 +496,8 @@ export default {
       product_testimonials: [],
       isVideo: false,
       video_url: "",
-      update_list: []
+      update_list: [],
+      ratingdata: 0
     };
   },
   computed: {
@@ -499,12 +513,11 @@ export default {
       this.auth_bool = false;
     }
 
-    var payload = new FormData()
-      payload.append("id", this.$route.params.id)
-    
-    this.$store.dispatch("getUpdates", payload).then(res =>{
+    var payload = new FormData();
+    payload.append("id", this.$route.params.id);
 
-      this.update_list = res.data 
+    this.$store.dispatch("getUpdates", payload).then(res => {
+      this.update_list = res.data;
     });
 
     this.getUserRatings();
@@ -590,6 +603,10 @@ export default {
       });
     },
 
+    checkAuth: function(btnName) {
+      $("#qwe-btn1 button").click();
+    },
+
     getUpdates: function() {
       var payload = new FormData();
       payload.append("id", this.$route.params.id);
@@ -641,9 +658,9 @@ export default {
 
     getUserRatings: function() {
       this.$store
-        .dispatch("getUserRatings", localStorage.getItem("user_id"))
+        .dispatch("getUserRatings", this.$route.params.id)
         .then(res => {
-          this.review_content = res.data.reviews;
+          // this.review_content = res.data.reviews;
           this.new_v = res.data.reviews;
           if (res.data.reviews) {
             this.review_bool = false;
@@ -662,7 +679,7 @@ export default {
 
     postUserRating: function(id) {
       this.$store
-        .dispatch("getUserRatings", localStorage.getItem("user_id"))
+        .dispatch("getUserRatings", this.$route.params.id)
         .then(res => {
           let i;
 
@@ -680,13 +697,13 @@ export default {
             $(stars[i]).addClass("selected");
           }
 
-          if (onStar > 0) {
+          if (this.ratingdata > 0) {
             const payload = new FormData();
             const id = localStorage.getItem("user_id");
             payload.append("id", res.data.id);
             payload.append("user", id);
             payload.append("product", this.$route.params.id);
-            payload.append("ratings", onStar);
+            payload.append("ratings", this.ratingdata);
 
             this.$store.dispatch("updateRatings", payload).then(res => {
               this.allProductRatings();
@@ -711,32 +728,33 @@ export default {
               $(stars[i]).addClass("selected");
             }
 
-            if (onStar > 0) {
+            if (this.ratingdata > 0) {
               const payload = new FormData();
               const id = localStorage.getItem("user_id");
-              payload.append("user", id);
+              payload.append("user", localStorage.getItem("user_id"));
+              payload.append("ratings", this.ratingdata);
+              payload.append("id", this.$route.params.id);
               payload.append("product", this.$route.params.id);
-              payload.append("ratings", onStar);
 
-              this.$store.dispatch("postRating", payload);
+              this.$store.dispatch("updateRatings", payload);
             }
           }
         });
     },
 
     submitReview: function() {
+      const payload = new FormData();
+      const id = localStorage.getItem("user_id");
+      payload.append("id", this.$route.params.id);
+      payload.append("user", id);
+      payload.append("product", this.$route.params.id);
+      payload.append("ratings", this.ratingdata);
+      payload.append("reviews", this.review_content);
+
       this.$store
-        .dispatch("getUserRatings", localStorage.getItem("user_id"))
+        .dispatch("updateRatings", payload)
         .then(res => {
-          const payL = new FormData();
-          payL.append("id", res.data.id);
-          payL.append("ratings", res.data.ratings);
-          payL.append("reviews", this.review_content);
-          payL.append("user", res.data.user);
-          payL.append("product", res.data.product);
-          this.$store.dispatch("updateRatings", payL).then(res => {
-            alert("Your review is submitted");
-          });
+          window.location.reload()
         });
     },
 
@@ -757,7 +775,7 @@ export default {
       this.review3 = [];
       this.review4 = [];
       this.review5 = [];
-      this.$store.dispatch("allProductRatings").then(res => {
+      this.$store.dispatch("ratingById", this.$route.params.id).then(res => {
         this.raitngswithreviews = [];
         res.data.reverse().map(item => {
           if (item.reviews != "") {
@@ -795,8 +813,11 @@ export default {
         let avg =
           (p1 * 1 + p2 * 2 + p3 * 3 + p4 * 4 + p5 * 5) /
           (p1 + p2 + p3 + p4 + p5);
-        this.averageRating = avg.toFixed(2);
-        this.avgPercent = (this.averageRating / 5) * 100;
+
+        if (res.data.length > 0) {
+          this.averageRating = avg.toFixed(2);
+          this.avgPercent = (this.averageRating / 5) * 100;
+        }
       });
     },
 

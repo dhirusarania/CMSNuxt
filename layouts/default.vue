@@ -31,6 +31,11 @@ body {
   background-color: var(--main-bg-color);
 }
 
+
+.vue-star-rating-rating-text{
+  display: none
+}
+
 /* html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;

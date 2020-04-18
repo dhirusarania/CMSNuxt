@@ -140,7 +140,7 @@ export default {
     /*
      ** Plugins to load before mounting the App
      */
-    plugins: [{ src: "~plugins/vue-notification.js", ssr: false }, { src: "@/plugins/timeline.js" }],
+    plugins: [{ src: "~plugins/vue-notification.js", ssr: false }, { src: "@/plugins/timeline.js" }, { src: '~/plugins/star.js', ssr: false }],
     /*
      ** Nuxt.js dev-modules
      */

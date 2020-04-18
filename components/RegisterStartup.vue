@@ -13,7 +13,7 @@
               <br />
               <span v-html="content"></span>
               <br />
-              <button class="st-bt-11" @click="register_startup">
+              <button v-if="static_data['button'] != ''" class="st-bt-11" @click="register_startup">
                 {{static_data['button']}}
                 <i
                   class="fa fa-angle-right"
@@ -39,7 +39,7 @@
               <br />
               <span v-html="content"></span>
               <br />
-              <button class="st-bt-11" @click="register_startup">
+              <button v-if="static_data['button'] != ''" class="st-bt-11" @click="register_startup">
                 {{static_data['button']}}
                 <i
                   class="fa fa-angle-right"
@@ -65,7 +65,7 @@
               <br />
               <span v-html="content"></span>
               <br />
-              <button class="st-bt-11" @click="register_startup">
+              <button v-if="static_data['button'] != ''" class="st-bt-11" @click="register_startup">
                 {{static_data['button']}}
                 <i
                   class="fa fa-angle-right"

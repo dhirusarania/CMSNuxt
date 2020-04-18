@@ -415,6 +415,7 @@ export const actions = {
         });
     },
 
+
     deleteProduct({ commit, state }, payload) {
         return new Promise((resolve, reject) => {
             axios({
@@ -857,6 +858,22 @@ export const actions = {
             axios({
                     method: "GET",
                     url: state.api.allProductRatings,
+                    contentType: "application/json"
+                })
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    },
+
+    ratingById({ commit, state }, id) {
+        return new Promise((resolve, reject) => {
+            axios({
+                    method: "GET",
+                    url: state.api.ratingById + id,
                     contentType: "application/json"
                 })
                 .then(res => {

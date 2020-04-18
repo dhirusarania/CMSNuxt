@@ -23,9 +23,24 @@
               </div>
               <div class="blind line_2"></div>
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-12" v-for="(x, y) in categoryList.slice(0, 8)" :key="y">
-              <div class="categorie_item" v-bind:id="x.id" @click="getListing(x.id)">
-                <div class="cate_item_block hi-icon-effect-8">
+            <div
+              class="col-md-3 col-sm-6 col-xs-12"
+              v-for="(x, y) in categoryList"
+              :key="y"
+            >
+              <div
+                v-if="x.home_active"
+                class="categorie_item"
+                v-bind:id="x.id"
+                @click="getListing(x.id)"
+              >
+                <div v-if="x.logo != null" class="cate_item_block hi-icon-effect-8" style="padding: 9px 0!important;">
+                  <img class="category_img" :src="x.logo" />
+                  <h1 style="display: flex;flex-direction: column;align-items:center;margin-top: 10px">
+                    <a href="#">{{ x.category }}</a>
+                  </h1>
+                </div>
+                <div v-else class="cate_item_block hi-icon-effect-8">
                   <h1>
                     <a href="#">{{ x.category }}</a>
                   </h1>
@@ -45,5 +60,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.category_img {
+  height: 100%;
+  width: 60px;
+  object-fit: contain;
+}
 </style>
