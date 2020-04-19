@@ -18,27 +18,27 @@
             <h2>Follow Us</h2>
             <hr />
             <ul class="social-icons">
-              <li v-if="about.facebook != ''">
+              <li v-if="about.facebook != '' && about.facebook != null">
                 <a target="_blank" :href="about.facebook">
                   <i class="fa fa-facebook"></i>
                 </a>
               </li>
-              <li v-if="about.twitter != ''">
+              <li v-if="about.twitter != '' && about.twitter != null">
                 <a target="_blank" :href="about.twitter">
                   <i class="fa fa-twitter"></i>
                 </a>
               </li>
-              <li v-if="about.google != ''">
+              <li v-if="about.google != '' && about.google != null">
                 <a target="_blank" :href="about.google">
                   <i class="fa fa-google-plus"></i>
                 </a>
               </li>
-              <li v-if="about.pinterest != ''">
+              <li v-if="about.pinterest != '' && about.pinterest != null">
                 <a target="_blank" :href="about.pinterest">
                   <i class="fa fa-pinterest-p"></i>
                 </a>
               </li>
-              <li v-if="about.youtube != ''">
+              <li v-if="about.youtube != '' && about.youtube != null">
                 <a target="_blank" :href="about.youtube">
                   <i class="fa fa-youtube-play"></i>
                 </a>
